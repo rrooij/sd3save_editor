@@ -17,4 +17,4 @@ def get_locations():
 
 def print_locations(locations):
     for location in locations:
-        print(location[1])
+        print(location)
