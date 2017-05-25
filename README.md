@@ -8,7 +8,7 @@ Clone the repository and run in the folder:
 
 `python3 -m sd3save_editor [options] [file]`
 
-Only Python 3 is supported.
+Only Python 3 is supported. View the available locations and their IDs by looking in `sd3save_editor/data/locations.json' with a text editor.
 
 # Warning
 
