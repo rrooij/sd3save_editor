@@ -36,10 +36,11 @@ class MainWindow(QMainWindow):
 
     def open_file_dialog(self):
         filename = QFileDialog.getOpenFileName(self, 'Open file', filter="Seiken3 Save (*.srm)")[0]
-        try:
-            self.save_file = save.read_save(filename)
-            self.ui.saveButton.setEnabled(True)
-            self.ui.actionSave.setEnabled(True)
-            self.init_save_event()
-        except Exception as ex:
-            QMessageBox.warning(self, "Can't open Seiken3 save", str(ex))
+        if filename:
+            try:
+                self.save_file = save.read_save(filename)
+                self.ui.saveButton.setEnabled(True)
+                self.ui.actionSave.setEnabled(True)
+                self.init_save_event()
+            except Exception as ex:
+                QMessageBox.warning(self, "Can't open Seiken3 save", str(ex))
