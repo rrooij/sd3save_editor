@@ -8,6 +8,8 @@ checksum_offset = 0x7FE  # Place where checksum is stored
 
 def read_save(filepath):
     f = open(filepath, 'r+b')
+    if not check_valid_save(f):
+        raise Exception("Not a valid Seiken 3 save")
     return f
 
 def check_valid_save(save):
@@ -48,19 +50,20 @@ def change_location(save, location_id):
     location_id: Number of location to go to
     """
     save.seek(location_offset)
-    write_16bit_int(save, location_offset, location_id)
+    write_16bit_int(save, location_offset, location_id, endian='little')
 
 
-def write_16bit_int(save, offset, integer):
-    """Write a 16 bit integer to Seiken Densetsu 3 save in 16 bit Big Endian
+def write_16bit_int(save, offset, integer, endian='big'):
+    """Write a 16 bit integer to Seiken Densetsu 3 save in 16 bit
 
     Keyword arguments:
     save -- Seiken Densetsu 3 Save File opened in binary mode
     offset -- Location to store the integer
     integer -- The integer to convert to 16 bit byte in Big Endian
+    endian -- Byte order
     """
     save.seek(offset)
-    save.write((integer).to_bytes(2, byteorder='big'))
+    save.write((integer).to_bytes(2, byteorder=endian))
 
 
 def close_save(save):
