@@ -42,7 +42,7 @@ def change_character_names(save, names):
     space_between = 0x20 # Each name in header is seperated by 0x20
     for idx, name in enumerate(names):
         if len(name) > 6:
-            raise NameTooLongException("Name is too long. Max is 6 characters")
+            raise NameTooLongException("Name: {0} is too long. Max is 6 characters".format(name))
         encoded = name.encode('utf-16-le')
         zeroes = bytearray(6 - len(name))
         save.seek(character_1_header_name_offset + (space_between * idx))

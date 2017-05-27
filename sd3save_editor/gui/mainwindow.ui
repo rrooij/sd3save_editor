@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>791</width>
-      <height>80</height>
+      <height>131</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -36,6 +36,36 @@
      </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="locationComboBox"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelCharacter1Name">
+       <property name="text">
+        <string>Character 1 Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="c1NameLineEdit"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelCharacter2Name">
+       <property name="text">
+        <string>Character 2 Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="c2NameLineEdit"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelCharacter3Name">
+       <property name="text">
+        <string>Character 3 Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="c3NameLineEdit"/>
      </item>
     </layout>
    </widget>
