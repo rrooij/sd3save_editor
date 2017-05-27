@@ -52,6 +52,7 @@ def change_location(save, location_id):
     write_16bit_int(save, location_offset, location_id, endian='little')
 
 def read_location(save):
+    """ Read the player's location """
     save.seek(location_offset)
     return int.from_bytes(save.read(2), byteorder='little')
 
