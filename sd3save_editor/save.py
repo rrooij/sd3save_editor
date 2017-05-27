@@ -4,6 +4,8 @@ header_end = 0x70  # End of the save header and start of save
 save_end = 0x7FD
 location_offset = 0x726  # Player's location
 checksum_offset = 0x7FE  # Place where checksum is stored
+character_1_header_name_offset = 0x10
+character_1_name_offset = 0x46d
 
 def read_save(filepath):
     f = open(filepath, 'r+b')
@@ -20,6 +22,36 @@ def check_valid_save(save):
     if text == b'exist':
         return True
     return False
+
+def read_character_names(save):
+    """Read names of the main 3 characters"""
+    replace_char = '\x00'
+
+    save.seek(character_1_name_offset)
+
+    first_character = save.read(12).decode('utf-16-le', 'backslashreplace').rstrip(replace_char)
+    second_character = save.read(12).decode('utf-16-le', 'backslashreplace').rstrip(replace_char)
+    third_character = save.read(12).decode('utf-16-le', 'backslashreplace').rstrip(replace_char)
+
+    return (first_character, second_character, third_character)
+
+
+def change_character_names(save, names):
+    """Change player names
+    """
+    space_between = 0x20 # Each name in header is seperated by 0x20
+    for idx, name in enumerate(names):
+        if len(name) > 6:
+            raise NameTooLongException("Name is too long. Max is 6 characters")
+        encoded = name.encode('utf-16-le')
+        zeroes = bytearray(6 - len(name))
+        save.seek(character_1_header_name_offset + (space_between * idx))
+        save.write(encoded)
+        save.write(zeroes)
+        save.seek(character_1_name_offset + (12 * idx))
+        save.write(encoded)
+        save.write(zeroes)
+
 
 def calculate_checksum(save):
     """Calculate 32 bit checksum for Seiken 3 Save
@@ -72,3 +104,6 @@ def write_16bit_int(save, offset, integer, endian='big'):
 def close_save(save):
     write_checksum(save)
     save.close()
+
+class NameTooLongException(Exception):
+    pass
