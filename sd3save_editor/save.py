@@ -5,6 +5,7 @@ save_end = 0x7FD
 save_headers_distance = 0x800
 location_offset = 0x726  # Player's location
 checksum_offset = 0x7FE  # Place where checksum is stored
+luc_offset = 0x491 # Luc, amount of money, 3 bytes
 character_1_header_name_offset = 0x10
 character_1_name_offset = 0x46d
 
@@ -20,6 +21,7 @@ def read_available_entries(save):
     has_second = True if check_valid_save(save, 1) else False
     has_third = True if check_valid_save(save, 2) else False
     return (has_first, has_second, has_third)
+
 
 def check_valid_save(save, index = 0):
     """Check if the save is valid. Not very reliable, but
@@ -42,6 +44,20 @@ def read_character_names(save, index = 0):
     third_character = save.read(12).decode('utf-16-le', 'backslashreplace').rstrip(replace_char)
 
     return (first_character, second_character, third_character)
+
+
+def read_luc(save, index = 0):
+    """ Read amount of luc"""
+    save.seek(calculate_offset(luc_offset, index))
+    luc = int.from_bytes(save.read(3), byteorder='little')
+    return luc
+
+
+def write_luc(save, luc, index = 0):
+    """Write certain amount of luc"""
+    save.seek(calculate_offset(luc_offset, index))
+    converted = luc.to_bytes(3, byteorder='little')
+    save.write(converted)
 
 
 def change_character_names(save, names, index = 0):
