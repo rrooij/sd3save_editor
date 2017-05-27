@@ -5,7 +5,6 @@ save_end = 0x7FD
 location_offset = 0x726  # Player's location
 checksum_offset = 0x7FE  # Place where checksum is stored
 
-
 def read_save(filepath):
     f = open(filepath, 'r+b')
     if not check_valid_save(f):
@@ -52,6 +51,9 @@ def change_location(save, location_id):
     save.seek(location_offset)
     write_16bit_int(save, location_offset, location_id, endian='little')
 
+def read_location(save):
+    save.seek(location_offset)
+    return int.from_bytes(save.read(2), byteorder='little')
 
 def write_16bit_int(save, offset, integer, endian='big'):
     """Write a 16 bit integer to Seiken Densetsu 3 save in 16 bit

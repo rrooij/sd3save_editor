@@ -41,6 +41,7 @@ class MainWindow(QMainWindow):
                 self.save_file = save.read_save(filename)
                 self.ui.saveButton.setEnabled(True)
                 self.ui.actionSave.setEnabled(True)
+                self.ui.locationComboBox.setCurrentIndex(save.read_location(self.save_file) - 1)
                 self.init_save_event()
             except Exception as ex:
                 QMessageBox.warning(self, "Can't open Seiken3 save", str(ex))
