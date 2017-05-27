@@ -38,8 +38,10 @@ class MainWindow(QMainWindow):
         c3Name = self.ui.c3NameLineEdit.text()
         try:
             save.change_character_names(self.save_file, (c1Name, c2Name, c3Name))
+            save.write_luc(self.save_file, self.ui.spinBoxLuc.value())
         except NameTooLongException as err:
             QMessageBox.warning(self, "Name too long", str(err))
+        # TODO: Cover other exceptions, like writing luc and location change
         save.write_checksum(self.save_file)
         self.save_file.flush()
 
@@ -56,6 +58,7 @@ class MainWindow(QMainWindow):
                 self.save_file = save.read_save(filename)
                 self.ui.saveButton.setEnabled(True)
                 self.ui.actionSave.setEnabled(True)
+                self.ui.spinBoxLuc.setValue(save.read_luc(self.save_file))
                 self.ui.locationComboBox.setCurrentIndex(save.read_location(self.save_file) - 1)
                 names = save.read_character_names(self.save_file)
                 self.ui.c1NameLineEdit.insert(names[0])

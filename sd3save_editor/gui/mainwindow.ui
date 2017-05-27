@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>791</width>
-      <height>131</height>
+      <height>157</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -66,6 +66,20 @@
      </item>
      <item row="3" column="1">
       <widget class="QLineEdit" name="c3NameLineEdit"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="labelLuc">
+       <property name="text">
+        <string>Luc</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QSpinBox" name="spinBoxLuc">
+       <property name="maximum">
+        <number>677215</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
