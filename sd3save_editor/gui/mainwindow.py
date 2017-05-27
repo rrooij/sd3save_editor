@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         location_id = self.ui.locationComboBox.currentIndex() + 1
         save.change_location(self.save_file, location_id)
         save.write_checksum(self.save_file)
+        self.save_file.flush()
 
     def closeEvent(self, event):
         if hasattr(self, 'save_file'):
