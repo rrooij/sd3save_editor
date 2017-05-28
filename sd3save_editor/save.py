@@ -2,7 +2,7 @@ from sd3save_editor import checksum
 
 header_end = 0x70  # End of the save header and start of save
 save_end = 0x7FD
-save_headers_distance = 0x800
+save_distance = 0x800 # Distance between seiken 3 save entries
 location_offset = 0x726  # Player's location
 checksum_offset = 0x7FE  # Place where checksum is stored
 luc_offset = 0x491 # Luc, amount of money, 3 bytes
@@ -111,8 +111,7 @@ def change_location(save, location_id, index = 0):
     save -- Seiken Densetsu 3 Save File opened in binary mode
     location_id: Number of location to go to
     """
-    offset = location_offset + (save_headers_distance * index)
-    write_16bit_int(save, offset, location_id, endian='little')
+    write_16bit_int(save, location_offset, location_id, endian='little')
 
 def read_location(save, index = 0):
     """ Read the player's location """
@@ -132,7 +131,7 @@ def write_16bit_int(save, offset, integer, endian='big', index = 0):
     save.write((integer).to_bytes(2, byteorder=endian))
 
 def calculate_offset(offset, index = 0):
-    return offset + (save_headers_distance * index)
+    return offset + (save_distance * index)
 
 def close_save(save):
     write_checksum(save)
