@@ -13,3 +13,7 @@ Only Python 3 is supported. View the available locations and their IDs by lookin
 # Warning
 
 Backup your save before messing with it!
+
+# Credits
+
+* Location ID's were found [here](https://www.romhacking.net/documents/662/) and made possible by RomHacking.net user [giangurgolo](https://www.romhacking.net/community/801/)
