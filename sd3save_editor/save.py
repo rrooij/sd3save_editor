@@ -134,6 +134,7 @@ def read_location(save, index=0):
     save.seek(location_offset)
     return int.from_bytes(save.read(2), byteorder='little')
 
+
 def write_16bit_int(save, offset, integer, endian='big', index=0):
     """Write a 16 bit integer to Seiken Densetsu 3 save in 16 bit
 
