@@ -1,6 +1,12 @@
 # Seiken Densetsu 3 save editor
 
-Simple save editor made in Python. It can only edit the player's location so far.
+Simple save editor made in Python.
+
+It has the following features for now:
+
+* Change luc (the currency in the game)
+* Change player names
+* Change location
 
 # Running
 
