@@ -23,7 +23,7 @@ First, install pyqt and git:
 ```
 sudo apt install python3-pyqt5 git
 git clone https://github.com/rrooij/sd3save_editor.git
-cd sd3save_editor.git
+cd sd3save_editor
 chmod +x start_gui.sh
 ./start_gui.sh
 ```
