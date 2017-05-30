@@ -19,7 +19,7 @@ def read_save(filepath):
 
 def check_valid_save(save):
     entries = read_available_entries(save)
-    if not all(entries):
+    if not entries[0] and not entries[1] and not entries[2]:
         return False
     return True
 
