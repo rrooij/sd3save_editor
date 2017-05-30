@@ -12,21 +12,27 @@ character_1_name_offset = 0x46d
 
 def read_save(filepath):
     f = open(filepath, 'r+b')
-    entries = read_available_entries(f)
-    if not all(entries):
+    if not check_valid_save(f):
         raise Exception("Not a valid Seiken 3 save")
     return f
 
 
+def check_valid_save(save):
+    entries = read_available_entries(save)
+    if not all(entries):
+        return False
+    return True
+
+
 def read_available_entries(save):
     """Return which indexes are available"""
-    has_first = True if check_valid_save(save, 0) else False
-    has_second = True if check_valid_save(save, 1) else False
-    has_third = True if check_valid_save(save, 2) else False
+    has_first = True if check_entry_exists(save, 0) else False
+    has_second = True if check_entry_exists(save, 1) else False
+    has_third = True if check_entry_exists(save, 2) else False
     return (has_first, has_second, has_third)
 
 
-def check_valid_save(save, index=0):
+def check_entry_exists(save, index=0):
     """Check if the save is valid. Not very reliable, but
        the least I can do for now to prevent people from
        messing up files"""
