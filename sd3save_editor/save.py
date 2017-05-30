@@ -8,6 +8,7 @@ CHECKSUM_OFFSET = 0x7FE  # Place where checksum is stored
 LUC_OFFSET = 0x491  # Luc, amount of money, 3 bytes
 CHARACTER_1_HEADER_NAME_OFFSET = 0x10
 CHARACTER_1_NAME_OFFSET = 0x46d
+CHARACTER_1_CURRENT_HP = 0x172
 
 
 def read_save(filepath):
@@ -42,6 +43,24 @@ def check_entry_exists(save, index=0):
         return True
     return False
 
+
+def read_current_hp(save, index=0, character_index=0):
+    """Read current HP of character"""
+    save.seek(calculate_char_stat_offset(index, character_index))
+    return int.from_bytes(save.read(2), byteorder='little')
+
+
+def write_current_hp(save, hp, index=0, character_index=0):
+    """Write current HP of character"""
+    save.seek(calculate_char_stat_offset(index, character_index))
+    save.write(hp.to_bytes(2, byteorder='little'))
+
+
+def calculate_char_stat_offset(index=0, character_index=0):
+    char_difference = 0xfd
+    return calculate_offset(CHARACTER_1_CURRENT_HP,
+                            index) + (character_index *
+                                      char_difference)
 
 def read_character_names(save, index=0):
     """Read names of the main 3 characters"""
