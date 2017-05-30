@@ -60,12 +60,14 @@ def write_current_hp(save, hp, index=0, character_index=0):
                                          character_index))
     save.write(hp.to_bytes(2, byteorder='little'))
 
+
 def read_max_hp(save, index=0, character_index=0):
     """Read max. HP of character"""
     save.seek(calculate_char_stat_offset(CHARACTER_1_MAX_HP,
                                          index,
                                          character_index))
     return int.from_bytes(save.read(2), byteorder='little')
+
 
 def write_max_hp(save, hp, index=0, character_index=0):
     """Write max. HP of character"""
@@ -74,8 +76,9 @@ def write_max_hp(save, hp, index=0, character_index=0):
                                          character_index))
     save.write(hp.to_bytes(2, byteorder='little'))
 
+
 def calculate_char_stat_offset(offset, index=0, character_index=0):
-    char_difference = 0xfd
+    char_difference = 0xff
     return calculate_offset(offset,
                             index) + (character_index *
                                       char_difference)
