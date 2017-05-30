@@ -1,13 +1,13 @@
 from sd3save_editor import checksum
 
-header_end = 0x70  # End of the save header and start of save
-save_end = 0x7FD
-save_distance = 0x800  # Distance between seiken 3 save entries
-location_offset = 0x726  # Player's location
-checksum_offset = 0x7FE  # Place where checksum is stored
-luc_offset = 0x491  # Luc, amount of money, 3 bytes
-character_1_header_name_offset = 0x10
-character_1_name_offset = 0x46d
+HEADER_END = 0x70  # End of the save header and start of save
+SAVE_END = 0x7FD
+SAVE_DISTANCE = 0x800  # Distance between seiken 3 save entries
+LOCATION_OFFSET = 0x726  # Player's location
+CHECKSUM_OFFSET = 0x7FE  # Place where checksum is stored
+LUC_OFFSET = 0x491  # Luc, amount of money, 3 bytes
+CHARACTER_1_HEADER_NAME_OFFSET = 0x10
+CHARACTER_1_NAME_OFFSET = 0x46d
 
 
 def read_save(filepath):
@@ -46,7 +46,7 @@ def check_entry_exists(save, index=0):
 def read_character_names(save, index=0):
     """Read names of the main 3 characters"""
 
-    save.seek(calculate_offset(character_1_name_offset, index))
+    save.seek(calculate_offset(CHARACTER_1_NAME_OFFSET, index))
 
     first_character = decode_char_string(save.read(12))
     second_character = decode_char_string(save.read(12))
@@ -64,14 +64,14 @@ def decode_char_string(char_name):
 
 def read_luc(save, index=0):
     """ Read amount of luc"""
-    save.seek(calculate_offset(luc_offset, index))
+    save.seek(calculate_offset(LUC_OFFSET, index))
     luc = int.from_bytes(save.read(3), byteorder='little')
     return luc
 
 
 def write_luc(save, luc, index=0):
     """Write certain amount of luc"""
-    save.seek(calculate_offset(luc_offset, index))
+    save.seek(calculate_offset(LUC_OFFSET, index))
     converted = luc.to_bytes(3, byteorder='little')
     save.write(converted)
 
@@ -86,12 +86,12 @@ def change_character_names(save, names, index=0):
                                        "characters".format(name))
         encoded = name.encode('utf-16-le')
         zeroes = bytearray(7 - len(name))
-        offset = calculate_offset(character_1_header_name_offset,
+        offset = calculate_offset(CHARACTER_1_HEADER_NAME_OFFSET,
                                   index) + (space_between * idx)
         save.seek(offset)
         save.write(encoded)
         save.write(zeroes)
-        save.seek(calculate_offset(character_1_name_offset) + (12 * idx))
+        save.seek(calculate_offset(CHARACTER_1_NAME_OFFSET) + (12 * idx))
         save.write(encoded)
         save.write(zeroes)
 
@@ -102,9 +102,9 @@ def calculate_checksum(save, index=0):
     Keyword arguments:
     save -- Seiken Densetsu 3 Save File opened in binary mode
     """
-    current_header_end = calculate_offset(header_end, index=index)
+    current_header_end = calculate_offset(HEADER_END, index=index)
     save.seek(current_header_end)
-    data = save.read(save_end - header_end + 1)
+    data = save.read(SAVE_END - HEADER_END + 1)
     return checksum.sum16_checksum(data)
 
 
@@ -116,7 +116,7 @@ def write_checksum(save, index=0):
     index -- Save number to use
     """
     checksum = calculate_checksum(save, index)
-    write_16bit_int(save, checksum_offset, checksum, index=index)
+    write_16bit_int(save, CHECKSUM_OFFSET, checksum, index=index)
 
 
 def write_all_checksums(save, indexes):
@@ -133,12 +133,12 @@ def change_location(save, location_id, index=0):
     save -- Seiken Densetsu 3 Save File opened in binary mode
     location_id: Number of location to go to
     """
-    write_16bit_int(save, location_offset, location_id, endian='little')
+    write_16bit_int(save, LOCATION_OFFSET, location_id, endian='little')
 
 
 def read_location(save, index=0):
     """ Read the player's location """
-    save.seek(location_offset)
+    save.seek(LOCATION_OFFSET)
     return int.from_bytes(save.read(2), byteorder='little')
 
 
@@ -156,7 +156,7 @@ def write_16bit_int(save, offset, integer, endian='big', index=0):
 
 
 def calculate_offset(offset, index=0):
-    return offset + (save_distance * index)
+    return offset + (SAVE_DISTANCE * index)
 
 
 def close_save(save):
