@@ -12,7 +12,8 @@ character_1_name_offset = 0x46d
 
 def read_save(filepath):
     f = open(filepath, 'r+b')
-    if not check_valid_save(f):
+    entries = read_available_entries(f)
+    if not all(entries):
         raise Exception("Not a valid Seiken 3 save")
     return f
 
