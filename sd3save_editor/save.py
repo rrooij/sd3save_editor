@@ -20,6 +20,9 @@ def read_save(filepath):
 
 
 def check_valid_save(save):
+    """Check if the save is valid. Not very reliable, but
+       the least I can do for now to prevent people from
+       messing up files"""
     entries = read_available_entries(save)
     if not entries[0] and not entries[1] and not entries[2]:
         return False
@@ -35,9 +38,7 @@ def read_available_entries(save):
 
 
 def check_entry_exists(save, index=0):
-    """Check if the save is valid. Not very reliable, but
-       the least I can do for now to prevent people from
-       messing up files"""
+    """Check if save entry exists"""
     save.seek(calculate_offset(0, index))
     text = save.read(5)
     if text == b'exist':
