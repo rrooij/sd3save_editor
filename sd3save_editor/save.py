@@ -183,7 +183,7 @@ def read_location(save, index=0):
 
 
 def write_16bit_int(save, offset, integer, endian='big', index=0):
-    """Write a 16 bit integer to Seiken Densetsu 3 save in 16 bit
+    """Write a 16 bit integer to Seiken Densetsu 3 save
 
     Keyword arguments:
     save -- Seiken Densetsu 3 Save File opened in binary mode
