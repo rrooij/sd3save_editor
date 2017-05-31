@@ -7,6 +7,10 @@ It has the following features for now:
 * Change luc (the currency in the game)
 * Change player names
 * Change location
+* Change max HP and current HP
+
+**Please finish the game without cheating first before you cheat by editing your save.
+  The challenge of the game adds up to the experience.**
 
 # Running
 
