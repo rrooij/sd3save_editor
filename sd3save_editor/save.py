@@ -83,6 +83,7 @@ def calculate_char_stat_offset(offset, index=0, character_index=0):
                             index) + (character_index *
                                       char_difference)
 
+
 def read_character_names(save, index=0):
     """Read names of the main 3 characters"""
 
