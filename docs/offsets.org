@@ -1,9 +1,9 @@
-# Offsets
+* Offsets
 
 This document should contain most of the offsets I found myself and have collected from other resources.
-Each save entry should be seperated by 0x800
+Each save entry should be seperated by ~0x800~.
 
-## General information
+** General information
 
 | Name                          | Offset | Length (bytes) |
 |-------------------------------+--------+----------------|
@@ -13,12 +13,12 @@ Each save entry should be seperated by 0x800
 | Player's location             |  0x726 |              2 |
 | End of header                 |   0x6F |                |
 
-## Header
+** Header
 
 The header contains the information you see on the save select screen in the game.
 Each save entry has its own header. Information for all three characters are stored
-in the header if they are unlocked in the game, seperated by `0x20`. That's why I only
-documented the first character, since you just add 0x20 to go to the next character.
+in the header if they are unlocked in the game, seperated by ~0x20~. That's why I only
+documented the first character, since you just add ~0x20~ to go to the next character.
 
 
 | Name                     | Offset |              Length | Description                                                |
