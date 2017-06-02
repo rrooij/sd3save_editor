@@ -12,7 +12,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.init_file_open_events()
         self.init_change_name_input()
-        self.init_location_combobox()
+        self.init_combobox()
         self.show()
 
     def init_file_open_events(self):
@@ -39,8 +39,9 @@ class MainWindow(QMainWindow):
         self.ui.c2NameLineEdit.setMaxLength(6)
         self.ui.c3NameLineEdit.setMaxLength(6)
 
-    def init_location_combobox(self):
+    def init_combobox(self):
         self.ui.locationComboBox.addItems(game_data.parse_locations_json())
+        self.ui.tracksComboBox.addItems(game_data.parse_tracks_json())
 
     def init_save_event(self):
         self.ui.actionSave.triggered.connect(self.save_form_values)
@@ -48,6 +49,7 @@ class MainWindow(QMainWindow):
 
     def save_form_values(self):
         location_id = self.ui.locationComboBox.currentIndex() + 1
+        track_id = self.ui.tracksComboBox.currentIndex() + 1
         save.change_location(self.save_file, location_id)
         c1Name = self.ui.c1NameLineEdit.text()
         c2Name = self.ui.c2NameLineEdit.text()
@@ -59,6 +61,7 @@ class MainWindow(QMainWindow):
         curr_hp_2 = self.ui.spinBoxCurrentHpChar2.value()
         curr_hp_3 = self.ui.spinBoxCurrentHpChar3.value()
         try:
+            save.write_current_music(self.save_file, track_id)
             save.change_character_names(self.save_file, (c1Name, c2Name, c3Name))
             save.write_luc(self.save_file, self.ui.spinBoxLuc.value())
             save.write_max_hp(self.save_file, max_hp_1,
@@ -94,6 +97,7 @@ class MainWindow(QMainWindow):
                 self.ui.actionSave.setEnabled(True)
                 self.ui.spinBoxLuc.setValue(save.read_luc(self.save_file))
                 self.ui.locationComboBox.setCurrentIndex(save.read_location(self.save_file) - 1)
+                self.ui.tracksComboBox.setCurrentIndex(save.read_current_music(self.save_file) - 1)
                 names = save.read_character_names(self.save_file)
                 self.ui.c1NameLineEdit.insert(names[0])
                 self.ui.c2NameLineEdit.insert(names[1])

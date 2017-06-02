@@ -10,6 +10,7 @@ CHARACTER_1_HEADER_NAME_OFFSET = 0x10
 CHARACTER_1_NAME_OFFSET = 0x46d
 CHARACTER_1_CURRENT_HP = 0x172
 CHARACTER_1_MAX_HP = 0x1FD
+CURRENT_MUSIC = 0x2C
 
 
 def read_save(filepath):
@@ -44,6 +45,18 @@ def check_entry_exists(save, index=0):
     if text == b'exist':
         return True
     return False
+
+
+def read_current_music(save, index=0):
+    """Read the music being played"""
+    save.seek(CURRENT_MUSIC)
+    return int.from_bytes(save.read(1), byteorder='little')
+
+
+def write_current_music(save, music_id, index=0):
+    """Write current music to be played"""
+    save.seek(CURRENT_MUSIC)
+    save.write(music_id.to_bytes(1, byteorder='little'))
 
 
 def read_current_hp(save, index=0, character_index=0):
