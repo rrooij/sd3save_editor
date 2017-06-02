@@ -80,7 +80,6 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Name too long", str(err))
         except OSError as err:
             QMessageBox.warning(self, "Error writing file", str(err))
-        # TODO: Cover other exceptions, like writing luc and location change
         save.write_checksum(self.save_file)
         self.save_file.flush()
 
