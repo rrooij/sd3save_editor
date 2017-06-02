@@ -11,6 +11,7 @@ Each save entry should be seperated by ~0x800~.
 | End of first save             |  0x7FD |                |
 | Checksum                      |  0x7FE |              2 |
 | Player's location             |  0x726 |              2 |
+| Luc (money)                   |  0x491 |              3 |
 | End of header                 |   0x6F |                |
 
 ** Header
@@ -36,3 +37,18 @@ information shown and actually used in the gameplay.
 | Current playing music    |   0x2C |  1/2 (I'm not sure) |                                                            |
 | Last selected save       |   0x4E |                   1 | The last chosen save, index starts at 0                    |
 | Time                     |   0x6C | 3, but I'm not sure | Time played                                                |
+
+** Save data
+
+The distance between each character here is ~0xff~. The stats like "Current HP", "Max HP" will assume
+that the first character will be edited. If you want to edit another character, add up ~0xff~.
+All characters will be covered if this is not the case.
+
+
+| Name               | Offset | Length | Description         |
+|--------------------+--------+--------+---------------------|
+| Current HP         |  0x172 |      2 |                     |
+| Max HP             |  0x1FD |      2 |                     |
+| Name (character 1) |  0x46D |     12 | Name of character   |
+| Name (character 2) |  0x479 |     12 | Name of character 2 |
+| Name (character 3) |  0x485 |     12 | Name of character 3 |
