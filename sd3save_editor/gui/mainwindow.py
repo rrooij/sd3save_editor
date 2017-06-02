@@ -3,7 +3,7 @@ from sd3save_editor.gui.mainwindow_ui import Ui_MainWindow
 
 from sd3save_editor.save import NameTooLongException
 import sd3save_editor.save as save
-import sd3save_editor.locations as locations
+import sd3save_editor.game_data as game_data
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
         self.ui.c3NameLineEdit.setMaxLength(6)
 
     def init_location_combobox(self):
-        self.ui.locationComboBox.addItems(locations.get_locations())
+        self.ui.locationComboBox.addItems(game_data.parse_locations_json())
 
     def init_save_event(self):
         self.ui.actionSave.triggered.connect(self.save_form_values)
