@@ -50,7 +50,6 @@ class MainWindow(QMainWindow):
     def save_form_values(self):
         location_id = self.ui.locationComboBox.currentIndex() + 1
         track_id = self.ui.tracksComboBox.currentIndex() + 1
-        save.change_location(self.save_file, location_id)
         c1Name = self.ui.c1NameLineEdit.text()
         c2Name = self.ui.c2NameLineEdit.text()
         c3Name = self.ui.c3NameLineEdit.text()
@@ -62,6 +61,7 @@ class MainWindow(QMainWindow):
         curr_hp_3 = self.ui.spinBoxCurrentHpChar3.value()
         try:
             save.write_current_music(self.save_file, track_id)
+            save.change_location(self.save_file, location_id)
             save.change_character_names(self.save_file, (c1Name, c2Name, c3Name))
             save.write_luc(self.save_file, self.ui.spinBoxLuc.value())
             save.write_max_hp(self.save_file, max_hp_1,
@@ -78,6 +78,8 @@ class MainWindow(QMainWindow):
                                   character_index=2)
         except NameTooLongException as err:
             QMessageBox.warning(self, "Name too long", str(err))
+        except OSError as err:
+            QMessageBox.warning(self, "Error writing file", str(err))
         # TODO: Cover other exceptions, like writing luc and location change
         save.write_checksum(self.save_file)
         self.save_file.flush()
