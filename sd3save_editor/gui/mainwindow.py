@@ -76,6 +76,7 @@ class MainWindow(QMainWindow):
                                   character_index=1)
             save.write_current_hp(self.save_file, curr_hp_3,
                                   character_index=2)
+            QMessageBox.information(self, "Succesfully saved", "Succesfully saved")
         except NameTooLongException as err:
             QMessageBox.warning(self, "Name too long", str(err))
         except OSError as err:
