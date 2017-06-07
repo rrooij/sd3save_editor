@@ -1,4 +1,5 @@
 from sd3save_editor import checksum
+from datetime import timedelta
 
 HEADER_END = 0x70  # End of the save header and start of save
 SAVE_END = 0x7FD
@@ -11,6 +12,7 @@ CHARACTER_1_NAME_OFFSET = 0x46d
 CHARACTER_1_CURRENT_HP = 0x172
 CHARACTER_1_MAX_HP = 0x1FD
 CURRENT_MUSIC = 0x2C
+TIME_OFFSET = 0x6C
 
 
 def read_save(filepath):
@@ -45,6 +47,18 @@ def check_entry_exists(save, index=0):
     if text == b'exist':
         return True
     return False
+
+
+def read_time(save, index=0):
+    save.seek(TIME_OFFSET)
+    seconds = int.from_bytes(save.read(4), byteorder='little') / 60
+    return timedelta(seconds=seconds)
+
+
+def write_time(save, timedelta, index=0):
+    save.seek(TIME_OFFSET)
+    seconds = int(timedelta.total_seconds()) * 60
+    save.write(seconds.to_bytes(4, byteorder='little'))
 
 
 def read_current_music(save, index=0):
