@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox
+from datetime import timedelta
 from sd3save_editor.gui.mainwindow_ui import Ui_MainWindow
 
 from sd3save_editor.save import NameTooLongException
@@ -56,6 +57,7 @@ class MainWindow(QMainWindow):
         max_hp_1 = self.ui.spinBoxMaxHpChar1.value()
         max_hp_2 = self.ui.spinBoxMaxHpChar2.value()
         max_hp_3 = self.ui.spinBoxMaxHpChar3.value()
+        seconds = self.ui.secondsSpinBox.value()
         curr_hp_1 = self.ui.spinBoxCurrentHpChar1.value()
         curr_hp_2 = self.ui.spinBoxCurrentHpChar2.value()
         curr_hp_3 = self.ui.spinBoxCurrentHpChar3.value()
@@ -76,6 +78,7 @@ class MainWindow(QMainWindow):
                                   character_index=1)
             save.write_current_hp(self.save_file, curr_hp_3,
                                   character_index=2)
+            save.write_time(self.save_file, timedelta(seconds=seconds))
             QMessageBox.information(self, "Succesfully saved", "Succesfully saved")
         except NameTooLongException as err:
             QMessageBox.warning(self, "Name too long", str(err))
@@ -104,6 +107,8 @@ class MainWindow(QMainWindow):
                 self.ui.c1NameLineEdit.insert(names[0])
                 self.ui.c2NameLineEdit.insert(names[1])
                 self.ui.c3NameLineEdit.insert(names[2])
+                seconds = int(save.read_time(self.save_file).total_seconds())
+                self.ui.secondsSpinBox.setValue(seconds)
                 self.set_curr_hp_values()
                 self.set_max_hp_values()
                 self.init_save_event()
