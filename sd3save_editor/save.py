@@ -1,4 +1,4 @@
-from sd3save_editor import checksum
+from sd3save_editor import checksum, game_data
 from datetime import timedelta
 
 HEADER_END = 0x70  # End of the save header and start of save
@@ -13,6 +13,7 @@ CHARACTER_1_CURRENT_HP = 0x172
 CHARACTER_1_MAX_HP = 0x1FD
 CURRENT_MUSIC = 0x2C
 TIME_OFFSET = 0x6C
+STORAGE_OFFSET = 0x6A5
 
 
 def read_save(filepath):
@@ -87,6 +88,42 @@ def write_current_hp(save, hp, index=0, character_index=0):
                                          index,
                                          character_index))
     save.write(hp.to_bytes(2, byteorder='little'))
+
+
+def write_storage_item_amount(save, item_storage_idx, amount, index=0):
+    """Write amount of certain item in storage. Maximum amount is 99"""
+    if amount > 99:
+        raise AmountTooBigException("Amount should be lower than 100")
+    offset = calculate_offset(STORAGE_OFFSET + item_storage_idx, index)
+    save.seek(offset)
+    save.write(amount.to_bytes(1, byteorder='little'))
+
+
+def write_storage_item_amounts(save, items, index=0):
+    """Write amount of multiple items.
+
+    Keyword arguments:
+    save -- Save file opened in binary mode
+    items -- Dictionairy with index of item and amount
+    index -- Save entry number
+    """
+    for item_index, amount in items.items():
+        write_storage_item_amount(save, item_index, amount, index=index)
+
+
+def read_storage_item_amount(save, item_storage_idx, index=0):
+    offset = calculate_offset(STORAGE_OFFSET + item_storage_idx, index)
+    save.seek(offset)
+    return int.from_bytes(save.read(1), byteorder='little')
+
+
+def read_all_storage_items_amount(save, index=0):
+    item_names = game_data.parse_storage_json()
+    items = []
+    for idx, item_name in enumerate(item_names):
+        amount = read_storage_item_amount(save, idx, index)
+        items.append((item_name, amount))
+    return items
 
 
 def read_max_hp(save, index=0, character_index=0):
@@ -234,4 +271,8 @@ def close_save(save):
 
 
 class NameTooLongException(Exception):
+    pass
+
+
+class AmountTooBigException(Exception):
     pass

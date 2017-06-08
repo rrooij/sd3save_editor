@@ -1,10 +1,11 @@
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QTableWidgetItem
 from datetime import timedelta
 from sd3save_editor.gui.mainwindow_ui import Ui_MainWindow
-
+from sd3save_editor.gui.itemtabledelegate import ItemTableDelegate
 from sd3save_editor.save import NameTooLongException
 import sd3save_editor.save as save
 import sd3save_editor.game_data as game_data
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -13,6 +14,8 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.init_file_open_events()
         self.init_change_name_input()
+        self.ui.storageTableWidget.setItemDelegate(ItemTableDelegate(self))
+        self.editedStorageItems = dict()
         self.init_combobox()
         self.show()
 
@@ -34,6 +37,19 @@ class MainWindow(QMainWindow):
         self.ui.spinBoxMaxHpChar1.setValue(max_hp_1)
         self.ui.spinBoxMaxHpChar2.setValue(max_hp_2)
         self.ui.spinBoxMaxHpChar3.setValue(max_hp_3)
+
+    def set_table_data(self):
+        items = save.read_all_storage_items_amount(self.save_file)
+        self.ui.storageTableWidget.setRowCount(len(items))
+        for idx, item in enumerate(items):
+            widget_item_name = QTableWidgetItem(item[0])
+            widget_item_amount = QTableWidgetItem(str(item[1]))
+            self.ui.storageTableWidget.setItem(idx, 0, widget_item_name)
+            self.ui.storageTableWidget.setItem(idx, 1, widget_item_amount)
+        self.ui.storageTableWidget.itemChanged.connect(self.table_storage_changed)
+
+    def table_storage_changed(self, item):
+        self.editedStorageItems[item.row()] = int(item.text())
 
     def init_change_name_input(self):
         self.ui.c1NameLineEdit.setMaxLength(6)
@@ -79,6 +95,7 @@ class MainWindow(QMainWindow):
             save.write_current_hp(self.save_file, curr_hp_3,
                                   character_index=2)
             save.write_time(self.save_file, timedelta(seconds=seconds))
+            save.write_storage_item_amounts(self.save_file, self.editedStorageItems)
             QMessageBox.information(self, "Succesfully saved", "Succesfully saved")
         except NameTooLongException as err:
             QMessageBox.warning(self, "Name too long", str(err))
@@ -111,6 +128,7 @@ class MainWindow(QMainWindow):
                 self.ui.secondsSpinBox.setValue(seconds)
                 self.set_curr_hp_values()
                 self.set_max_hp_values()
+                self.set_table_data()
                 self.init_save_event()
             except Exception as ex:
                 QMessageBox.warning(self, "Can't open Seiken3 save", str(ex))

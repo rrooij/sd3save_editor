@@ -13,6 +13,10 @@ def parse_locations_json():
     return parse_json_game_data('locations.json')
 
 
+def parse_storage_json():
+    return parse_json_game_data('item_storage.json')
+
+
 def print_locations(locations):
     for location in locations:
         print(location)
