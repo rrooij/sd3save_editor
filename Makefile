@@ -1,4 +1,4 @@
-VERSION=0.4
+VERSION=0.5
 PACKAGE_NAME=python3-sd3save-editor_$(VERSION)_all
 
 .PHONY: package_deb
