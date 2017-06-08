@@ -53,3 +53,112 @@ All characters will be covered if this is not the case.
 | Name (character 1) |  0x46D |     12 | Name of character   |
 | Name (character 2) |  0x479 |     12 | Name of character 2 |
 | Name (character 3) |  0x485 |     12 | Name of character 3 |
+
+** Item storage
+
+| Name                 | Offset  |
+|----------------------+---------|
+| Nothing              | 6A5     |
+| Paladin's Proof      | 6A6     |
+| Lord's Proof         | 6A7     |
+| Master's Proof       | 6A8     |
+| Duelist's Proof      | 6A9     |
+| Gold Wolf Soul       | 6AA     |
+| Silver Wolf Soul     | 6AB     |
+| Death Wolf Soul      | 6AC     |
+| Demon Wolf Soul      | 6AD     |
+| Good Luck Die        | 6AE     |
+| Bad Luck Die         | 6AF     |
+| Bullseye Die         | 6B0     |
+| Nighteye Die         | 6B1     |
+| Arcane Book          | 6B2     |
+| Book of Secrets      | 6B3     |
+| Book of Rune         | 6B4     |
+| Forbidden Book       | 6B5     |
+| Holy Water Vial      | 6B6     |
+| Bottle of Salt       | 6B7     |
+| Bottle of Ashes      | 6B8     |
+| Bottle of Blood      | 6B9     |
+| Briesingamen         | 6BA     |
+| MorningStarChain     | 6BB     |
+| KnightDrg Chain      | 6BC     |
+| Gleipnir             | 6BD     |
+| Item Seed            | 6BE     |
+| Mysterious Seed      | 6BF     |
+| Flying Item Seed     | 6C0     |
+| Magic Seed           | 6C1     |
+| ??? Seed             | 6C2     |
+| Weapon/Armor Seed    | 6C3     |
+| Earth Coin           | 6C4     |
+| Gnome Statue         | 6C5     |
+| Basilisk's Fang      | 6C6     |
+| Bullete's Scale      | 6C7     |
+| Needlion's Eye       | 6C8     |
+| Molebear's Claw      | 6C9     |
+| Storm Coin           | 6CA     |
+| Jinn Statue          | 6CB     |
+| Harpy's Fang         | 6CC     |
+| Bird's Scale         | 6CD     |
+| Bee's Eye            | 6CE     |
+| Siren's Claw         | 6CF     |
+| Ice Coin             | 6D0     |
+| Undine Statue        | 6D1     |
+| WhiteDragon Fang     | 6D2     |
+| Sahagin's Scale      | 6D3     |
+| Slime's Eye          | 6D4     |
+| Poseidon's Claw      | 6D5     |
+| Flame Coin           | 6D6     |
+| Salamando Statue     | 6D7     |
+| Fire Lizard          | 6D8     |
+| Drake's Scale        | 6D9     |
+| Battum's Eye         | 6DA     |
+| Kerberos' Claw       | 6DB     |
+| Darkness Coin        | 6DC     |
+| Shade Statue         | 6DD     |
+| Ghost's Eye          | 6DE     |
+| Specter's Eye        | 6DF     |
+| Shadowzero's Eye     | 6E0     |
+| Demon's Claw         | 6E1     |
+| Light Coin           | 6E2     |
+| Wisp Statue          | 6E3     |
+| Poto Oil             | 6E4     |
+| Pakkun Oil           | 6E5     |
+| Mama Poto Oil        | 6E6     |
+| Papa Poto's Claw     | 6E7     |
+| Moon Coin            | 6E8     |
+| Luna Statue          | 6E9     |
+| ChibiDevil's Eye     | 6EA     |
+| Porobin Oil          | 6EB     |
+| Wolf Devil Oil       | 6EC     |
+| Carmilla's Claw      | 6ED     |
+| Myconid's Eye        | 6EE     |
+| Assassin Bug Eye     | 6EF     |
+| Dryad Statue         | 6F0     |
+| Grell Oil            | 6F1     |
+| Matango Oil          | 6F2     |
+| Crawler's Claw       | 6F3     |
+| Hand Axe             | 6F4     |
+| Shuriken             | 6F5     |
+| Dart                 | 6F6     |
+| Pumkin Bomb          | 6F7     |
+| Round Drop           | 6F8     |
+| Pakkun Chocolate     | 6F9     |
+| Magic Walnut         | 6FA     |
+| Honey Drink          | 6FB     |
+| Pupui Grass          | 6FC     |
+| Stardust Herb        | 6FD     |
+| Angel's Grail        | 6FE     |
+| Magical Rope         | 6FF     |
+| Gunpowder            | 700     |
+| Chibikko Hammer      | 701     |
+| Moogle Badge         | 702     |
+| Pihyara Flute        | 703     |
+| Wind Drum            | 704     |
+| Dreamsee Herb        | 705     |
+| HalfKey A (dummy)    | 706     |
+| HalfKey B (dummy)    | 707     |
+| Mystery Key (dummy)  | 708     |
+| Dragon's Eye (dummy) | 709     |
+| Illusion Mirror      | 70A     |
+| Demon Statue (dummy) | 70B     |
+| Nothing (dummies)    | 70C-7A4 |
