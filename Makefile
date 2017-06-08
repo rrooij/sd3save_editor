@@ -11,5 +11,18 @@ package_deb:
 	dpkg-deb -b tmp_extracted $(PACKAGE_NAME).deb
 	rm -rf tmp_extracted
 
+7zip_windows: package_exe
+	7z a dist/windows_exe.7z dist/sd3save_editor
+
+package_exe:
+	export WINEPREFIX=venv_wine
+	wine pyinstaller sd3save_editor/gui/main.py -D	\
+	     --paths venv_wine/drive_c/users/$(USER)/Local\ Settings/Application\ Data/Programs/Python/Python35-32/Lib/site-packages/PyQt5/Qt/bin/	\
+	     --paths venv_wine/drive_c/users/$(USER)/Local\ Settings/Application\ Data/Programs/Python/Python35-32/	\
+	     --name sd3save_editor
+	mkdir -p dist/sd3save_editor/sd3save_editor/data
+	cp -r sd3save_editor/data dist/sd3save_editor/sd3save_editor/
+
 clean:
 	$(RM) *.deb
+	$(RM) -r dist/*
