@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QTableWidgetItem
+from PyQt5.QtWidgets import (QMainWindow, QFileDialog,
+                             QMessageBox, QTableWidgetItem)
 from datetime import timedelta
 from sd3save_editor.gui.mainwindow_ui import Ui_MainWindow
 from sd3save_editor.gui.itemtabledelegate import ItemTableDelegate
@@ -46,7 +47,9 @@ class MainWindow(QMainWindow):
             itemAmountWidget = QTableWidgetItem(str(item[1]))
             self.ui.storageTableWidget.setItem(idx, 0, itemNameWidget)
             self.ui.storageTableWidget.setItem(idx, 1, itemAmountWidget)
-        self.ui.storageTableWidget.itemChanged.connect(self.tableStorageChanged)
+        self.ui.storageTableWidget.itemChanged.connect(
+            self.tableStorageChanged
+        )
 
     def tableStorageChanged(self, item):
         self.editedStorageItems[item.row()] = int(item.text())
@@ -80,7 +83,9 @@ class MainWindow(QMainWindow):
         try:
             save.write_current_music(self.saveFile, trackId)
             save.change_location(self.saveFile, locationId)
-            save.change_character_names(self.saveFile, (c1Name, c2Name, c3Name))
+            save.change_character_names(self.saveFile, (c1Name,
+                                                        c2Name,
+                                                        c3Name))
             save.write_luc(self.saveFile, self.ui.spinBoxLuc.value())
             save.write_max_hp(self.saveFile, maxHp1,
                               character_index=0)
@@ -95,8 +100,10 @@ class MainWindow(QMainWindow):
             save.write_current_hp(self.saveFile, currentHp3,
                                   character_index=2)
             save.write_time(self.saveFile, timedelta(seconds=seconds))
-            save.write_storage_item_amounts(self.saveFile, self.editedStorageItems)
-            QMessageBox.information(self, "Succesfully saved", "Succesfully saved")
+            save.write_storage_item_amounts(self.saveFile,
+                                            self.editedStorageItems)
+            QMessageBox.information(self, "Succesfully saved",
+                                          "Succesfully saved")
         except NameTooLongException as err:
             QMessageBox.warning(self, "Name too long", str(err))
         except OSError as err:
@@ -109,17 +116,22 @@ class MainWindow(QMainWindow):
             self.saveFile.close()
         event.accept()
 
-
     def openFileDialog(self):
-        filename = QFileDialog.getOpenFileName(self, 'Open file', filter="Seiken3 Save (*.srm)")[0]
+        filename = QFileDialog.getOpenFileName(self, 'Open file',
+                                               filter="Seiken3 Save (*.srm)"
+                                               )[0]
         if filename:
             try:
                 self.saveFile = save.read_save(filename)
                 self.ui.saveButton.setEnabled(True)
                 self.ui.actionSave.setEnabled(True)
                 self.ui.spinBoxLuc.setValue(save.read_luc(self.saveFile))
-                self.ui.locationComboBox.setCurrentIndex(save.read_location(self.saveFile) - 1)
-                self.ui.tracksComboBox.setCurrentIndex(save.read_current_music(self.saveFile) - 1)
+                self.ui.locationComboBox.setCurrentIndex(
+                    save.read_location(self.saveFile) - 1
+                )
+                self.ui.tracksComboBox.setCurrentIndex(
+                    save.read_current_music(self.saveFile) - 1
+                )
                 names = save.read_character_names(self.saveFile)
                 self.ui.c1NameLineEdit.insert(names[0])
                 self.ui.c2NameLineEdit.insert(names[1])
