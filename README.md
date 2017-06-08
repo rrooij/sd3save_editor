@@ -35,6 +35,11 @@ chmod +x start_gui.sh
 
 You can run start_gui.sh afterwards in Nautilus or another file explorer.
 
+# Running on Windows
+
+Check out the [Releases](https://github.com/rrooij/sd3save_editor/releases) page. It will contain a Windows
+binary.
+
 # Warning
 
 Backup your save before messing with it!
