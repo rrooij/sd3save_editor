@@ -25,18 +25,19 @@ The only exception is the current music. This is stored in the header section, b
 information shown and actually used in the gameplay.
 
 
-| Name                     | Offset |             Length | Description                                                                        |
-|--------------------------+--------+--------------------+------------------------------------------------------------------------------------|
+| Name                     | Offset |             Length | Description                                                |
+|--------------------------+--------+--------------------+------------------------------------------------------------|
+|                          |        |                    | <58>                                                       |
 | Exist string             |    0x0 |                  8 | Every save header starts with this string, encoded ASCII, padded with 3 times 0x20 |
-| 1st character name       |   0x10 |                 12 | Encoded in UTF-16-le, as far as I know. Padded with 0 byte                         |
-| 1st character lvl        |   0x1C |                  1 | For some reason, the real level is the value + 1                                   |
-| 1st character current HP |   0x1D |                  2 |                                                                                    |
-| 1st character max HP     |   0x1F |                  2 |                                                                                    |
-| 1st character current MP |   0x21 |                  2 |                                                                                    |
-| 1st character max MP     |   0x23 |                  2 |                                                                                    |
-| Current playing music    |   0x2C | 1/2 (I'm not sure) |                                                                                    |
-| Last selected save       |   0x4E |                  1 | The last chosen save, index starts at 0                                            |
-| Time                     |   0x6C |                  4 | Time played, 32 bit value divided by 60 is the amount of seconds played            |
+| 1st character name       |   0x10 |                 12 | Encoded in UTF-16-le, as far as I know. Padded with 0 byte |
+| 1st character lvl        |   0x1C |                  1 | For some reason, the real level is the value + 1           |
+| 1st character current HP |   0x1D |                  2 |                                                            |
+| 1st character max HP     |   0x1F |                  2 |                                                            |
+| 1st character current MP |   0x21 |                  2 |                                                            |
+| 1st character max MP     |   0x23 |                  2 |                                                            |
+| Current playing music    |   0x2C | 1/2 (I'm not sure) |                                                            |
+| Last selected save       |   0x4E |                  1 | The last chosen save, index starts at 0                    |
+| Time                     |   0x6C |                  4 | Time played, 32 bit value divided by 60 is the amount of seconds played |
 
 ** Save data
 
