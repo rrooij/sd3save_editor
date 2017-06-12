@@ -36,6 +36,7 @@ information shown and actually used in the gameplay.
 | 1st character current MP |   0x21 |      2 |                                                            |
 | 1st character max MP     |   0x23 |      2 |                                                            |
 | Current playing music    |   0x2C |      1 |                                                            |
+| Location name            |   0x4C |      1 | Name of location in save header                            |
 | Last selected save       |   0x4E |      1 | The last chosen save, index starts at 0                    |
 | Time                     |   0x6C |      4 | Time played, 32 bit value divided by 60 is the amount of seconds played |
 
