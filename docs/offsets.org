@@ -50,6 +50,13 @@ All characters will be covered if this is not the case.
 | Name               | Offset | Length | Description         |
 |--------------------+--------+--------+---------------------|
 | Current HP         |  0x172 |      2 |                     |
+| Current MP         |  0x174 |      2 |                     |
+| Strength           |  0x176 |      1 |                     |
+| Agility            |  0x177 |      1 |                     |
+| Vitality           |  0x178 |      1 |                     |
+| Intelligence       |  0x179 |      1 |                     |
+| Spirit             |  0x17A |      1 |                     |
+| Luck               |  0x17B |      1 |                     |
 | Max HP             |  0x1FD |      2 |                     |
 | Name (character 1) |  0x46D |     12 | Name of character   |
 | Name (character 2) |  0x479 |     12 | Name of character 2 |
