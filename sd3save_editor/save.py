@@ -1,8 +1,7 @@
 from sd3save_editor import checksum, game_data
 from construct import (Adapter, Byte, Bytes, Checksum, Const, Struct,
-                       Int8sl, Int16sb, Int16sl, Int16ub, Int16ul, Int32sl,
-                       String, Sequence, this, RawCopy, Optional, Check)
-from datetime import timedelta
+                       Int8sl, Int16sl, Int16ub, Int16ul, Int32sl,
+                       Sequence, this, RawCopy, Optional)
 
 
 class TimeAdapter(Adapter):
@@ -149,6 +148,7 @@ def write_save(filepath, data):
         if "data" in entry.data:
             del entry.data.data
     open(filepath, 'wb').write(save_format.build(data))
+
 
 def write_save_stream(stream, data):
     for entry in data:
