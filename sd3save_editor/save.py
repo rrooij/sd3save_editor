@@ -16,17 +16,23 @@ class TimeAdapter(Adapter):
 
 
 class CharacterNameAdapter(Adapter):
-    """Convert name to utf16-le"""
+    """Convert name to utf16-le
+       TODO: Find character encoding
+    """
+    HEART_UTF16 = b'\x64\x27'
+    HEART_SEIKEN3 = b'\x8d\x00'
 
     def _decode(self, obj, context):
         replace_char = '\x00'
-        return obj.decode('utf-16-le',
-                          'backslashreplace').rstrip(replace_char)
+        obj_with_heart = obj.replace(self.HEART_SEIKEN3, self.HEART_UTF16)
+        return obj_with_heart.decode('utf-16-le',
+                                     'backslashreplace').rstrip(replace_char)
 
     def _encode(self, obj, context):
         zeroes = bytearray(12)
         name = obj.encode('utf-16-le')
-        for idx, char in enumerate(name):
+        name_converted = name.replace(self.HEART_UTF16, self.HEART_SEIKEN3)
+        for idx, char in enumerate(name_converted):
             zeroes[idx] = char
         return zeroes
 
