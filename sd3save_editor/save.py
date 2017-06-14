@@ -1,105 +1,181 @@
 from sd3save_editor import checksum, game_data
+from construct import (Adapter, Byte, Bytes, Checksum, Const, Struct,
+                       Int8sl, Int16sb, Int16sl, Int16ub, Int16ul, Int32sl,
+                       String, Sequence, this, RawCopy, Optional, Check)
 from datetime import timedelta
 
-HEADER_END = 0x70  # End of the save header and start of save
-SAVE_END = 0x7FD
-SAVE_DISTANCE = 0x800  # Distance between seiken 3 save entries
-LOCATION_OFFSET = 0x726  # Player's location
-CHECKSUM_OFFSET = 0x7FE  # Place where checksum is stored
-LUC_OFFSET = 0x491  # Luc, amount of money, 3 bytes
-CHARACTER_1_HEADER_NAME_OFFSET = 0x10
-CHARACTER_1_NAME_OFFSET = 0x46d
-CHARACTER_1_CURRENT_HP = 0x172
-CHARACTER_1_MAX_HP = 0x1FD
-CURRENT_MUSIC = 0x2C
-TIME_OFFSET = 0x6C
-STORAGE_OFFSET = 0x6A5
+
+class TimeAdapter(Adapter):
+    """Convert seconds to seiken densetsu 3 time
+       Time is saved as a 60th of a second
+    """
+    def _decode(self, obj, context):
+        return int(obj / 60)
+
+    def _encode(self, obj, context):
+        return int(obj * 60)
+
+
+class CharacterNameAdapter(Adapter):
+    """Convert name to utf16-le"""
+
+    def _decode(self, obj, context):
+        replace_char = '\x00'
+        return obj.decode('utf-16-le',
+                          'backslashreplace').rstrip(replace_char)
+
+    def _encode(self, obj, context):
+        zeroes = bytearray(12)
+        name = obj.encode('utf-16-le')
+        for idx, char in enumerate(name):
+            zeroes[idx] = char
+        return zeroes
+
+
+char_header = Struct(
+    "name"/CharacterNameAdapter(Bytes(12)),
+    "lvl"/Int8sl,
+    "current_hp"/Int16sl,
+    "max_hp"/Int16sl,
+    "current_mp"/Int16sl,
+    "max_mp"/Int16sl,
+    "unclear"/Bytes(7)
+)
+
+save_header = Struct(
+    "exist_string"/Const(b"exist   "),
+    "unclear"/Bytes(8),
+    "char1"/char_header,
+    "playing_music"/Int8sl,
+    "unclear2"/Bytes(3),
+    "char2"/char_header,
+    "location_name"/Int8sl,
+    "unclear3"/Bytes(3),
+    "char3"/char_header,
+    "time_played"/TimeAdapter(Int32sl)
+)
+
+character_stats = Struct(
+    "current_hp"/Int16sl,
+    "current_mp"/Int16sl,
+    "strength"/Int8sl,
+    "agility"/Int8sl,
+    "vitality"/Int8sl,
+    "int"/Int8sl,
+    "spirit"/Int8sl,
+    "luck"/Int8sl,
+    "total_exp"/Int16sl,
+    "remainder_total_exp"/Int16sl,
+    "unclear"/Bytes(5),
+    "tech_gauge_max"/Int8sl,
+    "exp_for_next_level"/Int16sl,
+    "remainder_exp_next_level"/Int16sl,
+    "lvl"/Int8sl,
+    "unclear2"/Byte,
+    "character_skin"/Int8sl,
+    "class_change_made"/Int8sl,
+    "class"/Int8sl,
+    "equipped_weapon"/Int8sl,
+    "equipped_helmet"/Int8sl,
+    "equipped_armor"/Int8sl,
+    "equipped_gauntlet"/Int8sl,
+    "equipped_shield"/Int8sl,
+    "unclear3"/Bytes(19),  # Not known yet :(
+    "attack_power"/Int16sl,
+    "unclear4"/Bytes(5),  # Also unkown
+    "evade_rate"/Int8sl,
+    "defense_power"/Int16sl,
+    "magic_defense_power"/Int16sl,
+    "unkown_could_be_power"/Int16sl,
+    "extra_weapons"/Int8sl[7],
+    "unclear5"/Bytes(9),
+    "extra_armor"/Int8sl[7],  # TODO: Do something with extra equipment
+    "unclear6"/Bytes(9),  # Unknown,
+    "extra_gauntlets"/Int8sl[7],
+    "unclear7"/Byte,  # Unknown
+    "extra_shields"/Int8sl[7],
+    "unclear8"/Byte,  # Unkown
+    "spells"/Int8sl[12],
+    "targeting_values"/Int8sl[12],
+    "max_hp"/Int16sl,
+    "max_mp"/Int16sl
+)
+
+save_data = Struct(
+    "still_unknown"/Bytes(258),
+    "char1"/character_stats,
+    "unclear"/Bytes(112),
+    "char2"/character_stats,
+    "unclear2"/Bytes(112),
+    "char3"/character_stats,
+    "unclear3"/Bytes(110),
+    "character_names"/CharacterNameAdapter(Bytes(12))[3],
+    "luc"/Int16ul,
+    "unclear4"/Bytes(529),
+    "item_storage"/Int8sl[103],
+    "unclear5"/Bytes(27),
+    "location"/Int16sl,
+    "unclear6"/Bytes(46),
+    "item_ring"/Int8sl[10],
+    "unclear7"/Bytes(158)
+)
+
+save_entry = Struct(
+    "header"/save_header,
+    "data"/RawCopy(save_data),
+    "checksum"/Checksum(Int16ub,
+                        lambda data: checksum.sum16_checksum(data),
+                        this.data.data)
+)
+
+
+save_format = Sequence(
+    Optional(save_entry),
+    Optional(save_entry),
+    Optional(save_entry)
+)
 
 
 def read_save(filepath):
     f = open(filepath, 'r+b')
-    if not check_valid_save(f):
+    save_data = save_format.parse(f.read())
+    if not check_valid_save(save_data):
         raise Exception("Not a valid Seiken 3 save")
-    return f
+    return save_data
 
 
-def check_valid_save(save):
+def write_save(filepath, data):
+    for entry in data:
+        if "data" in entry.data:
+            del entry.data.data
+    open(filepath, 'wb').write(save_format.build(data))
+
+def write_save_stream(stream, data):
+    for entry in data:
+        if "data" in entry.data:
+            del entry.data.data
+    stream.seek(0)
+    stream.write(save_format.build(data))
+
+
+def check_valid_save(save_data):
     """Check if the save is valid. Not very reliable, but
        the least I can do for now to prevent people from
        messing up files"""
-    entries = read_available_entries(save)
-    if not entries[0] and not entries[1] and not entries[2]:
+    if not save_data[0] and not save_data[1] and not save_data[2]:
         return False
     return True
 
 
-def read_available_entries(save):
-    """Return which indexes are available"""
-    has_first = True if check_entry_exists(save, 0) else False
-    has_second = True if check_entry_exists(save, 1) else False
-    has_third = True if check_entry_exists(save, 2) else False
-    return (has_first, has_second, has_third)
+def write_character_names(save_data, character_names, index=0):
+    """Write character names to save data"""
+    save_data[index].data.value.character_names = character_names
+    save_data[index].header.char1.name = character_names[0]
+    save_data[index].header.char2.name = character_names[1]
+    save_data[index].header.char2.name = character_names[2]
 
 
-def check_entry_exists(save, index=0):
-    """Check if save entry exists"""
-    save.seek(calculate_offset(0, index))
-    text = save.read(5)
-    if text == b'exist':
-        return True
-    return False
-
-
-def read_time(save, index=0):
-    save.seek(TIME_OFFSET)
-    seconds = int.from_bytes(save.read(4), byteorder='little') / 60
-    return timedelta(seconds=seconds)
-
-
-def write_time(save, timedelta, index=0):
-    save.seek(TIME_OFFSET)
-    seconds = int(timedelta.total_seconds()) * 60
-    save.write(seconds.to_bytes(4, byteorder='little'))
-
-
-def read_current_music(save, index=0):
-    """Read the music being played"""
-    save.seek(CURRENT_MUSIC)
-    return int.from_bytes(save.read(1), byteorder='little')
-
-
-def write_current_music(save, music_id, index=0):
-    """Write current music to be played"""
-    save.seek(CURRENT_MUSIC)
-    save.write(music_id.to_bytes(1, byteorder='little'))
-
-
-def read_current_hp(save, index=0, character_index=0):
-    """Read current HP of character"""
-    save.seek(calculate_char_stat_offset(CHARACTER_1_CURRENT_HP,
-                                         index,
-                                         character_index))
-    return int.from_bytes(save.read(2), byteorder='little')
-
-
-def write_current_hp(save, hp, index=0, character_index=0):
-    """Write current HP of character"""
-    save.seek(calculate_char_stat_offset(CHARACTER_1_CURRENT_HP,
-                                         index,
-                                         character_index))
-    save.write(hp.to_bytes(2, byteorder='little'))
-
-
-def write_storage_item_amount(save, item_storage_idx, amount, index=0):
-    """Write amount of certain item in storage. Maximum amount is 99"""
-    if amount > 99:
-        raise AmountTooBigException("Amount should be lower than 100")
-    offset = calculate_offset(STORAGE_OFFSET + item_storage_idx, index)
-    save.seek(offset)
-    save.write(amount.to_bytes(1, byteorder='little'))
-
-
-def write_storage_item_amounts(save, items, index=0):
+def write_storage_item_amounts(save_data, items, index=0):
     """Write amount of multiple items.
 
     Keyword arguments:
@@ -108,166 +184,18 @@ def write_storage_item_amounts(save, items, index=0):
     index -- Save entry number
     """
     for item_index, amount in items.items():
-        write_storage_item_amount(save, item_index, amount, index=index)
+        save_data[index].data.value.item_storage[item_index] = amount
 
 
-def read_storage_item_amount(save, item_storage_idx, index=0):
-    offset = calculate_offset(STORAGE_OFFSET + item_storage_idx, index)
-    save.seek(offset)
-    return int.from_bytes(save.read(1), byteorder='little')
-
-
-def read_all_storage_items_amount(save, index=0):
+def read_all_storage_items_amount(save_data, index=0):
     item_names = game_data.parse_storage_json()
     items = []
     for idx, item_name in enumerate(item_names):
-        amount = read_storage_item_amount(save, idx, index)
+        amount = save_data[index].data.value.item_storage[idx]
+        if amount > 99:
+            raise AmountTooBigException("Amount should be lower than 100")
         items.append((item_name, amount))
     return items
-
-
-def read_max_hp(save, index=0, character_index=0):
-    """Read max. HP of character"""
-    save.seek(calculate_char_stat_offset(CHARACTER_1_MAX_HP,
-                                         index,
-                                         character_index))
-    return int.from_bytes(save.read(2), byteorder='little')
-
-
-def write_max_hp(save, hp, index=0, character_index=0):
-    """Write max. HP of character"""
-    save.seek(calculate_char_stat_offset(CHARACTER_1_MAX_HP,
-                                         index,
-                                         character_index))
-    save.write(hp.to_bytes(2, byteorder='little'))
-
-
-def calculate_char_stat_offset(offset, index=0, character_index=0):
-    char_difference = 0xff
-    return calculate_offset(offset,
-                            index) + (character_index *
-                                      char_difference)
-
-
-def read_character_names(save, index=0):
-    """Read names of the main 3 characters"""
-
-    save.seek(calculate_offset(CHARACTER_1_NAME_OFFSET, index))
-
-    first_character = decode_char_string(save.read(12))
-    second_character = decode_char_string(save.read(12))
-    third_character = decode_char_string(save.read(12))
-
-    return (first_character, second_character, third_character)
-
-
-def decode_char_string(char_name):
-    """Decode character name and strip zeroes"""
-    replace_char = '\x00'
-    return char_name.decode('utf-16-le', 'backslashreplace') \
-                    .rstrip(replace_char)
-
-
-def read_luc(save, index=0):
-    """ Read amount of luc"""
-    save.seek(calculate_offset(LUC_OFFSET, index))
-    luc = int.from_bytes(save.read(3), byteorder='little')
-    return luc
-
-
-def write_luc(save, luc, index=0):
-    """Write certain amount of luc"""
-    save.seek(calculate_offset(LUC_OFFSET, index))
-    converted = luc.to_bytes(3, byteorder='little')
-    save.write(converted)
-
-
-def change_character_names(save, names, index=0):
-    """Change player names
-    """
-    space_between = 0x20  # Each name in header is seperated by 0x20
-    for idx, name in enumerate(names):
-        if len(name) > 6:
-            raise NameTooLongException("Name: {0} is too long. Max is 6"
-                                       "characters".format(name))
-        encoded = name.encode('utf-16-le')
-        zeroes = bytearray(7 - len(name))
-        offset = calculate_offset(CHARACTER_1_HEADER_NAME_OFFSET,
-                                  index) + (space_between * idx)
-        save.seek(offset)
-        save.write(encoded)
-        save.write(zeroes)
-        save.seek(calculate_offset(CHARACTER_1_NAME_OFFSET) + (12 * idx))
-        save.write(encoded)
-        save.write(zeroes)
-
-
-def calculate_checksum(save, index=0):
-    """Calculate 16 bit checksum for Seiken 3 Save
-
-    Keyword arguments:
-    save -- Seiken Densetsu 3 Save File opened in binary mode
-    """
-    current_header_end = calculate_offset(HEADER_END, index=index)
-    save.seek(current_header_end)
-    data = save.read(SAVE_END - HEADER_END + 1)
-    return checksum.sum16_checksum(data)
-
-
-def write_checksum(save, index=0):
-    """Write 16 bit checksum to Seiken 3 Save
-
-    Keyword arguments:
-    save -- Seiken Densetsu 3 Save File opened in binary mode
-    index -- Save number to use
-    """
-    checksum = calculate_checksum(save, index)
-    write_16bit_int(save, CHECKSUM_OFFSET, checksum, index=index)
-
-
-def write_all_checksums(save, indexes):
-    """Write all checksums vor valid saves"""
-    for number, is_valid in enumerate(indexes):
-        if is_valid:
-            write_checksum(save, number)
-
-
-def change_location(save, location_id, index=0):
-    """Change player location and write it to save
-
-    Keyword arguments:
-    save -- Seiken Densetsu 3 Save File opened in binary mode
-    location_id: Number of location to go to
-    """
-    write_16bit_int(save, LOCATION_OFFSET, location_id, endian='little')
-
-
-def read_location(save, index=0):
-    """ Read the player's location """
-    save.seek(LOCATION_OFFSET)
-    return int.from_bytes(save.read(2), byteorder='little')
-
-
-def write_16bit_int(save, offset, integer, endian='big', index=0):
-    """Write a 16 bit integer to Seiken Densetsu 3 save
-
-    Keyword arguments:
-    save -- Seiken Densetsu 3 Save File opened in binary mode
-    offset -- Location to store the integer
-    integer -- The integer to convert to 16 bit byte in Big Endian
-    endian -- Byte order
-    """
-    save.seek(calculate_offset(offset, index))
-    save.write((integer).to_bytes(2, byteorder=endian))
-
-
-def calculate_offset(offset, index=0):
-    return offset + (SAVE_DISTANCE * index)
-
-
-def close_save(save):
-    write_checksum(save)
-    save.close()
 
 
 class NameTooLongException(Exception):

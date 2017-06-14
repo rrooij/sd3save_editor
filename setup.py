@@ -16,5 +16,6 @@ setup(name='sd3save_editor',
           'gui_scripts': [
               'sd3save_editor_gui = sd3save_editor.gui.main.py'
               ]
-          }
+          },
+      install_requires=['construct']
       )

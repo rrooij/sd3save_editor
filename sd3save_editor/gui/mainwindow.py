@@ -15,6 +15,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.initFileOpenEvents()
         self.initChangeNameInput()
+        self.saveIndex = 0  # TODO let the user decide this
         self.ui.storageTableWidget.setItemDelegate(ItemTableDelegate(self))
         self.editedStorageItems = dict()
         self.initComboBox()
@@ -24,23 +25,23 @@ class MainWindow(QMainWindow):
         self.ui.actionOpen.triggered.connect(self.openFileDialog)
 
     def setCurrentHpValues(self):
-        currentHp1 = save.read_current_hp(self.saveFile, character_index=0)
-        currentHp2 = save.read_current_hp(self.saveFile, character_index=1)
-        currentHp3 = save.read_current_hp(self.saveFile, character_index=2)
+        currentHp1 = self.saveData[self.saveIndex].data.value.char1.current_hp
+        currentHp2 = self.saveData[self.saveIndex].data.value.char2.current_hp
+        currentHp3 = self.saveData[self.saveIndex].data.value.char3.current_hp
         self.ui.spinBoxCurrentHpChar1.setValue(currentHp1)
         self.ui.spinBoxCurrentHpChar2.setValue(currentHp2)
         self.ui.spinBoxCurrentHpChar3.setValue(currentHp3)
 
     def setMaxHpValues(self):
-        maxHp1 = save.read_max_hp(self.saveFile, character_index=0)
-        maxHp2 = save.read_max_hp(self.saveFile, character_index=1)
-        maxHp3 = save.read_max_hp(self.saveFile, character_index=2)
+        maxHp1 = self.saveData[self.saveIndex].data.value.char1.max_hp
+        maxHp2 = self.saveData[self.saveIndex].data.value.char2.max_hp
+        maxHp3 = self.saveData[self.saveIndex].data.value.char3.max_hp
         self.ui.spinBoxMaxHpChar1.setValue(maxHp1)
         self.ui.spinBoxMaxHpChar2.setValue(maxHp2)
         self.ui.spinBoxMaxHpChar3.setValue(maxHp3)
 
     def setTableData(self):
-        items = save.read_all_storage_items_amount(self.saveFile)
+        items = save.read_all_storage_items_amount(self.saveData)
         self.ui.storageTableWidget.setRowCount(len(items))
         for idx, item in enumerate(items):
             itemNameWidget = QTableWidgetItem(item[0])
@@ -70,9 +71,9 @@ class MainWindow(QMainWindow):
     def saveFormValues(self):
         locationId = self.ui.locationComboBox.currentIndex() + 1
         trackId = self.ui.tracksComboBox.currentIndex() + 1
-        c1Name = self.ui.c1NameLineEdit.text()
-        c2Name = self.ui.c2NameLineEdit.text()
-        c3Name = self.ui.c3NameLineEdit.text()
+        names = [self.ui.c1NameLineEdit.text(),
+                 self.ui.c2NameLineEdit.text(),
+                 self.ui.c3NameLineEdit.text()]
         maxHp1 = self.ui.spinBoxMaxHpChar1.value()
         maxHp2 = self.ui.spinBoxMaxHpChar2.value()
         maxHp3 = self.ui.spinBoxMaxHpChar3.value()
@@ -81,62 +82,50 @@ class MainWindow(QMainWindow):
         currentHp2 = self.ui.spinBoxCurrentHpChar2.value()
         currentHp3 = self.ui.spinBoxCurrentHpChar3.value()
         try:
-            save.write_current_music(self.saveFile, trackId)
-            save.change_location(self.saveFile, locationId)
-            save.change_character_names(self.saveFile, (c1Name,
-                                                        c2Name,
-                                                        c3Name))
-            save.write_luc(self.saveFile, self.ui.spinBoxLuc.value())
-            save.write_max_hp(self.saveFile, maxHp1,
-                              character_index=0)
-            save.write_max_hp(self.saveFile, maxHp2,
-                              character_index=1)
-            save.write_max_hp(self.saveFile, maxHp3,
-                              character_index=2)
-            save.write_current_hp(self.saveFile, currentHp1,
-                                  character_index=0)
-            save.write_current_hp(self.saveFile, currentHp2,
-                                  character_index=1)
-            save.write_current_hp(self.saveFile, currentHp3,
-                                  character_index=2)
-            save.write_time(self.saveFile, timedelta(seconds=seconds))
-            save.write_storage_item_amounts(self.saveFile,
+            self.saveData[self.saveIndex].header.playing_music = trackId
+            self.saveData[self.saveIndex].data.value.location = locationId
+            save.write_character_names(self.saveData,
+                                       names,
+                                       self.saveIndex)
+            self.saveData[self.saveIndex].data.value.luc = self.ui.spinBoxLuc.value()
+            self.saveData[self.saveIndex].data.value.char1.max_hp = maxHp1
+            self.saveData[self.saveIndex].data.value.char2.max_hp = maxHp2
+            self.saveData[self.saveIndex].data.value.char3.max_hp = maxHp3
+            self.saveData[self.saveIndex].data.value.char1.current_hp = currentHp1
+            self.saveData[self.saveIndex].data.value.char2.current_hp = currentHp2
+            self.saveData[self.saveIndex].data.value.char3.current_hp = currentHp3
+            self.saveData[self.saveIndex].header.time_played = seconds
+            save.write_storage_item_amounts(self.saveData,
                                             self.editedStorageItems)
+            save.write_save(self.filename, self.saveData)
             QMessageBox.information(self, "Succesfully saved",
                                           "Succesfully saved")
         except NameTooLongException as err:
             QMessageBox.warning(self, "Name too long", str(err))
         except OSError as err:
             QMessageBox.warning(self, "Error writing file", str(err))
-        save.write_checksum(self.saveFile)
-        self.saveFile.flush()
-
-    def closeEvent(self, event):
-        if hasattr(self, 'saveFile'):
-            self.saveFile.close()
-        event.accept()
 
     def openFileDialog(self):
-        filename = QFileDialog.getOpenFileName(self, 'Open file',
+        self.filename = QFileDialog.getOpenFileName(self, 'Open file',
                                                filter="Seiken3 Save (*.srm)"
                                                )[0]
-        if filename:
+        if self.filename:
             try:
-                self.saveFile = save.read_save(filename)
+                self.saveData = save.read_save(self.filename)
                 self.ui.saveButton.setEnabled(True)
                 self.ui.actionSave.setEnabled(True)
-                self.ui.spinBoxLuc.setValue(save.read_luc(self.saveFile))
+                self.ui.spinBoxLuc.setValue(self.saveData[self.saveIndex].data.value.luc)
                 self.ui.locationComboBox.setCurrentIndex(
-                    save.read_location(self.saveFile) - 1
+                    self.saveData[self.saveIndex].data.value.location - 1
                 )
                 self.ui.tracksComboBox.setCurrentIndex(
-                    save.read_current_music(self.saveFile) - 1
+                    self.saveData[self.saveIndex].header.playing_music - 1
                 )
-                names = save.read_character_names(self.saveFile)
+                names = self.saveData[self.saveIndex].data.value.character_names
                 self.ui.c1NameLineEdit.insert(names[0])
                 self.ui.c2NameLineEdit.insert(names[1])
                 self.ui.c3NameLineEdit.insert(names[2])
-                seconds = int(save.read_time(self.saveFile).total_seconds())
+                seconds = self.saveData[self.saveIndex].header.time_played
                 self.ui.secondsSpinBox.setValue(seconds)
                 self.setCurrentHpValues()
                 self.setMaxHpValues()

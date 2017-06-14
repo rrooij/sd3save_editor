@@ -11,16 +11,17 @@ def main():
     parser.add_argument("--location", type=int, help="ID of the in-game location")
 
     args = parser.parse_args()
-
-    if not save.check_valid_save(args.file):
+    save_data = save.save_format.parse(args.file.read())
+    if save_data[0] is False:
         print("Please choose a valid Seiken3 save file")
         parser.print_help()
         sys.exit(-1)
-
     if (args.location):
-        save.change_location(args.file, args.location)
+        save_data[0].data.value.location = args.location
 
-    save.close_save(args.file)
+    save.write_save_stream(args.file, save_data)
+    args.file.close()
+    sys.exit(0)
 
 if __name__ == "__main__":
     main()
