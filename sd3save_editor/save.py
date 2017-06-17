@@ -17,7 +17,10 @@ class TimeAdapter(Adapter):
 
 class CharacterNameAdapter(Adapter):
     """Convert name to utf16-le
-       TODO: Find character encoding
+       The maximum length of the character set is 8F
+
+       The character encoding is latin subset utf-16-le with
+       some added symbols in the 8X range.
     """
 
     SPECIAL_CHARACTERS = {
@@ -32,6 +35,50 @@ class CharacterNameAdapter(Adapter):
         "left_arrow": {
             "utf16": b'\x05\x2b',
             "seiken3": b'\x8a\x00'
+        },
+        "up_arrow": {
+            "utf16": b'\x91\x21',
+            "seiken3": b'\x88\x00'
+        },
+        "down_arrow": {
+            "utf16": b'\x93\x21',
+            "seiken3": b'\x89\x00'
+        },
+        "˼": {
+            "utf16": b'\xfc\x02',
+            "seiken3": b'\x82\x00',
+        },
+        "circle": {
+            "utf16": b'\xcb\x25',
+            "seiken3": b'\x83\x00'
+        },
+        "circle_filled": {
+            "utf16": b'\xcf\x25',
+            "seiken3": b'\x84\x00'
+        },
+        "circle_filled_small": {
+            "utf16": b'\xcf\x25',
+            "seiken3": b'\x84\x00'
+        },
+        "small_x": {
+            "utf16": b'\x93\x20',
+            "seiken3": b'\x85\x00'
+        },
+        "˹": {
+            "utf16": b'\xf9\x02',
+            "seiken3": b'\x87\x00'
+        },
+        "..": {
+            "utf16": b'\x25\x20',
+            "seiken3": b'\x86\x00'
+        },
+        "down_triangle": {
+            "utf16": b'\xbe\x25',
+            "seiken3": b'\x8b\x00'
+        },
+        "ampersand_special": {
+            "utf16": b'\xbe\x25',
+            "seiken3": b'\x8b\x00'
         }
     }
 
