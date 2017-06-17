@@ -19,20 +19,35 @@ class CharacterNameAdapter(Adapter):
     """Convert name to utf16-le
        TODO: Find character encoding
     """
-    HEART_UTF16 = b'\x64\x27'
-    HEART_SEIKEN3 = b'\x8d\x00'
+
+    SPECIAL_CHARACTERS = {
+        "heart": {
+            "utf16": b'\x64\x27',
+            "seiken3": b'\x8d\x00'
+        },
+        "right_arrow": {
+            "utf16": b'\xa1\x27',
+            "seiken3": b'\x8b\x00'
+        },
+        "left_arrow": {
+            "utf16": b'\x05\x2b',
+            "seiken3": b'\x8a\x00'
+        }
+    }
 
     def _decode(self, obj, context):
         replace_char = '\x00'
-        obj_with_heart = obj.replace(self.HEART_SEIKEN3, self.HEART_UTF16)
-        return obj_with_heart.decode('utf-16-le',
-                                     'backslashreplace').rstrip(replace_char)
+        for key, character in self.SPECIAL_CHARACTERS.items():
+            obj = obj.replace(character['seiken3'], character['utf16'])
+        return obj.decode('utf-16-le',
+                          'backslashreplace').rstrip(replace_char)
 
     def _encode(self, obj, context):
         zeroes = bytearray(12)
         name = obj.encode('utf-16-le')
-        name_converted = name.replace(self.HEART_UTF16, self.HEART_SEIKEN3)
-        for idx, char in enumerate(name_converted):
+        for key, character in self.SPECIAL_CHARACTERS.items():
+            name = name.replace(character['utf16'], character['seiken3'])
+        for idx, char in enumerate(name):
             zeroes[idx] = char
         return zeroes
 
