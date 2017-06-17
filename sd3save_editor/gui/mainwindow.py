@@ -87,7 +87,9 @@ class MainWindow(QMainWindow):
             save.write_character_names(self.saveData,
                                        names,
                                        self.saveIndex)
-            self.saveData[self.saveIndex].data.value.luc = self.ui.spinBoxLuc.value()
+            self.saveData[self.saveIndex].data.value.luc = (self.ui
+                                                                .spinBoxLuc
+                                                                .value())
             self.saveData[self.saveIndex].data.value.char1.max_hp = maxHp1
             self.saveData[self.saveIndex].data.value.char2.max_hp = maxHp2
             self.saveData[self.saveIndex].data.value.char3.max_hp = maxHp3
@@ -106,22 +108,27 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Error writing file", str(err))
 
     def openFileDialog(self):
-        self.filename = QFileDialog.getOpenFileName(self, 'Open file',
-                                               filter="Seiken3 Save (*.srm)"
-                                               )[0]
+        self.saveData = None  # Clean up previous data
+        self.filename = (QFileDialog
+                         .getOpenFileName(self,
+                                          'Open file',
+                                          filter="Seiken3 Save (*.srm)"
+                                          ))[0]
         if self.filename:
             try:
                 self.saveData = save.read_save(self.filename)
                 self.ui.saveButton.setEnabled(True)
                 self.ui.actionSave.setEnabled(True)
-                self.ui.spinBoxLuc.setValue(self.saveData[self.saveIndex].data.value.luc)
+                self.ui.spinBoxLuc.setValue(self.saveData[self.saveIndex]
+                                                .data.value.luc)
                 self.ui.locationComboBox.setCurrentIndex(
                     self.saveData[self.saveIndex].data.value.location - 1
                 )
                 self.ui.tracksComboBox.setCurrentIndex(
                     self.saveData[self.saveIndex].header.playing_music - 1
                 )
-                names = self.saveData[self.saveIndex].data.value.character_names
+                names = (self.saveData[self.saveIndex]
+                             .data.value.character_names)
                 self.ui.c1NameLineEdit.insert(names[0])
                 self.ui.c2NameLineEdit.insert(names[1])
                 self.ui.c3NameLineEdit.insert(names[2])
