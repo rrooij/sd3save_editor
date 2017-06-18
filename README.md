@@ -26,9 +26,10 @@ Only Python 3 is supported. View the available locations and their IDs by lookin
 First, install pyqt and git:
 
 ```
-sudo apt install python3-pyqt5 git
+sudo apt install python3-pip python3-pyqt5 git
 git clone https://github.com/rrooij/sd3save_editor.git
 cd sd3save_editor
+pip3 -r requirements.txt
 chmod +x start_gui.sh
 ./start_gui.sh
 ```
