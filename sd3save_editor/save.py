@@ -75,10 +75,6 @@ class CharacterNameAdapter(Adapter):
         "down_triangle": {
             "utf16": b'\xbe\x25',
             "seiken3": b'\x8b\x00'
-        },
-        "ampersand_special": {
-            "utf16": b'\xbe\x25',
-            "seiken3": b'\x8b\x00'
         }
     }
 
