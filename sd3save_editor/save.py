@@ -21,6 +21,8 @@ class CharacterNameAdapter(Adapter):
 
        The character encoding is latin subset utf-16-le with
        some added symbols in the 8X range.
+
+       TODO: Find out Japanese character encoding
     """
 
     SPECIAL_CHARACTERS = {
