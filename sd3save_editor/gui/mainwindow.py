@@ -75,6 +75,7 @@ class MainWindow(QMainWindow):
         self.ui.actionOpen.triggered.connect(self.openFileDialog)
 
     def setTableData(self):
+        self.ui.storageTableWidget.blockSignals(True)
         items = save.read_all_storage_items_amount(self.saveData)
         self.ui.storageTableWidget.setRowCount(len(items))
         for idx, item in enumerate(items):
@@ -85,6 +86,7 @@ class MainWindow(QMainWindow):
         self.ui.storageTableWidget.itemChanged.connect(
             self.tableStorageChanged
         )
+        self.ui.storageTableWidget.blockSignals(False)
 
     def tableStorageChanged(self, item):
         self.editedStorageItems[item.row()] = int(item.text())
