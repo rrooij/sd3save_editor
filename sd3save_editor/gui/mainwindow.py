@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import (QMainWindow, QFileDialog,
-                             QMessageBox, QTableWidgetItem)
+from PyQt5.QtWidgets import (QComboBox, QMainWindow, QFileDialog, QLineEdit,
+                             QMessageBox, QSpinBox, QTableWidgetItem)
 from datetime import timedelta
 from sd3save_editor.gui.mainwindow_ui import Ui_MainWindow
 from sd3save_editor.gui.itemtabledelegate import ItemTableDelegate
@@ -16,29 +16,63 @@ class MainWindow(QMainWindow):
         self.initFileOpenEvents()
         self.initChangeNameInput()
         self.saveIndex = 0  # TODO let the user decide this
+        self.guiData = {
+            "currentHp": {
+                "gui": [self.ui.spinBoxCurrentHpChar1,
+                        self.ui.spinBoxCurrentHpChar2,
+                        self.ui.spinBoxCurrentHpChar3],
+                "data": lambda self: [self.saveData[self.saveIndex].data.value.char1.current_hp,
+                                      self.saveData[self.saveIndex].data.value.char2.current_hp,
+                                      self.saveData[self.saveIndex].data.value.char3.current_hp],
+            },
+            "maxHp": {
+                "gui": [self.ui.spinBoxMaxHpChar1,
+                        self.ui.spinBoxMaxHpChar2,
+                        self.ui.spinBoxMaxHpChar3],
+                "data": lambda self: [self.saveData[self.saveIndex].data.value.char1.max_hp,
+                                      self.saveData[self.saveIndex].data.value.char2.max_hp,
+                                      self.saveData[self.saveIndex].data.value.char3.max_hp]
+            },
+            "secondsPlayed": {
+                "gui": [self.ui.secondsSpinBox],
+                "data": lambda self: [self.saveData[self.saveIndex].header.time_played]
+            },
+            "luc": {
+                "gui": [self.ui.spinBoxLuc],
+                "data": lambda self: [self.saveData[self.saveIndex].data.value.luc]
+            },
+            "names": {
+                "gui": [self.ui.c1NameLineEdit, self.ui.c2NameLineEdit, self.ui.c3NameLineEdit],
+                "data": lambda self: self.saveData[self.saveIndex].data.value.character_names
+            },
+            "location": {
+                "gui": [self.ui.locationComboBox],
+                "data": lambda self: [self.saveData[self.saveIndex].data.value.location - 1]
+            },
+            "track": {
+                "gui": [self.ui.tracksComboBox],
+                "data": lambda self: [self.saveData[self.saveIndex].header.playing_music - 1]
+            }
+        }
         self.ui.storageTableWidget.setItemDelegate(ItemTableDelegate(self))
         self.editedStorageItems = dict()
         self.initComboBox()
         self.show()
 
+    def initData(self):
+        for entry in self.guiData.values():
+            data = entry['data'](self)
+            gui = entry['gui']
+            for idx, guiElement in enumerate(gui):
+                if isinstance(guiElement, QSpinBox):
+                    guiElement.setValue(data[idx])
+                elif isinstance(guiElement, QLineEdit):
+                    guiElement.setText(data[idx])
+                elif isinstance(guiElement, QComboBox):
+                    guiElement.setCurrentIndex(data[idx])
+
     def initFileOpenEvents(self):
         self.ui.actionOpen.triggered.connect(self.openFileDialog)
-
-    def setCurrentHpValues(self):
-        currentHp1 = self.saveData[self.saveIndex].data.value.char1.current_hp
-        currentHp2 = self.saveData[self.saveIndex].data.value.char2.current_hp
-        currentHp3 = self.saveData[self.saveIndex].data.value.char3.current_hp
-        self.ui.spinBoxCurrentHpChar1.setValue(currentHp1)
-        self.ui.spinBoxCurrentHpChar2.setValue(currentHp2)
-        self.ui.spinBoxCurrentHpChar3.setValue(currentHp3)
-
-    def setMaxHpValues(self):
-        maxHp1 = self.saveData[self.saveIndex].data.value.char1.max_hp
-        maxHp2 = self.saveData[self.saveIndex].data.value.char2.max_hp
-        maxHp3 = self.saveData[self.saveIndex].data.value.char3.max_hp
-        self.ui.spinBoxMaxHpChar1.setValue(maxHp1)
-        self.ui.spinBoxMaxHpChar2.setValue(maxHp2)
-        self.ui.spinBoxMaxHpChar3.setValue(maxHp3)
 
     def setTableData(self):
         items = save.read_all_storage_items_amount(self.saveData)
@@ -119,23 +153,7 @@ class MainWindow(QMainWindow):
                 self.saveData = save.read_save(self.filename)
                 self.ui.saveButton.setEnabled(True)
                 self.ui.actionSave.setEnabled(True)
-                self.ui.spinBoxLuc.setValue(self.saveData[self.saveIndex]
-                                                .data.value.luc)
-                self.ui.locationComboBox.setCurrentIndex(
-                    self.saveData[self.saveIndex].data.value.location - 1
-                )
-                self.ui.tracksComboBox.setCurrentIndex(
-                    self.saveData[self.saveIndex].header.playing_music - 1
-                )
-                names = (self.saveData[self.saveIndex]
-                             .data.value.character_names)
-                self.ui.c1NameLineEdit.insert(names[0])
-                self.ui.c2NameLineEdit.insert(names[1])
-                self.ui.c3NameLineEdit.insert(names[2])
-                seconds = self.saveData[self.saveIndex].header.time_played
-                self.ui.secondsSpinBox.setValue(seconds)
-                self.setCurrentHpValues()
-                self.setMaxHpValues()
+                self.initData()
                 self.setTableData()
                 self.initSaveEvent()
             except Exception as ex:
