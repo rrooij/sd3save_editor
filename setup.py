@@ -17,5 +17,5 @@ setup(name='sd3save_editor',
               'sd3save_editor_gui = sd3save_editor.gui.__main__.py'
               ]
           },
-      install_requires=['construct']
+      install_requires=['construct', 'scalpl']
       )
