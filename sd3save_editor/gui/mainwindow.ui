@@ -130,6 +130,34 @@
             </property>
            </widget>
           </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="labelCurrentMpChar1">
+            <property name="text">
+             <string>Current MP</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="spinBoxCurrMpChar1">
+            <property name="maximum">
+             <number>999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="labelMaxMpChar1">
+            <property name="text">
+             <string>Max MP</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="spinBoxMaxMpChar1">
+            <property name="maximum">
+             <number>999</number>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
@@ -158,13 +186,6 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="labelMaxHpChar2">
-            <property name="text">
-             <string>Max HP</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="1">
            <widget class="QSpinBox" name="spinBoxCurrentHpChar2">
             <property name="maximum">
@@ -172,8 +193,43 @@
             </property>
            </widget>
           </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="labelMaxHpChar2">
+            <property name="text">
+             <string>Max HP</string>
+            </property>
+           </widget>
+          </item>
           <item row="3" column="1">
            <widget class="QSpinBox" name="spinBoxMaxHpChar2">
+            <property name="maximum">
+             <number>999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="labelCurrentMpChar2">
+            <property name="text">
+             <string>Current MP</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="spinBoxCurrMpChar2">
+            <property name="maximum">
+             <number>999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="labelMaxMpChar2">
+            <property name="text">
+             <string>Max MP</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="spinBoxMaxMpChar2">
             <property name="maximum">
              <number>999</number>
             </property>
@@ -223,6 +279,34 @@
           </item>
           <item row="3" column="1">
            <widget class="QSpinBox" name="spinBoxMaxHpChar3">
+            <property name="maximum">
+             <number>999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="labelCurrentMpChar3">
+            <property name="text">
+             <string>Current MP</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="spinBoxCurrMpChar3">
+            <property name="maximum">
+             <number>999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="labelMaxMpChar3">
+            <property name="text">
+             <string>Max MP</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="spinBoxMaxMpChar3">
             <property name="maximum">
              <number>999</number>
             </property>

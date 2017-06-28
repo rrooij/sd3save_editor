@@ -28,12 +28,30 @@ class MainWindow(QMainWindow):
                 headerCharacters=True,
                 dataCharacters=True
             ),
+            "currentMp": SpinboxElement(
+                guiElements=[self.ui.spinBoxCurrMpChar1,
+                             self.ui.spinBoxCurrMpChar2,
+                             self.ui.spinBoxCurrMpChar3],
+                dataKey='data.value.{}.current_mp',
+                headerKey='header.{}.current_mp',
+                headerCharacters=True,
+                dataCharacters=True
+            ),
             "maxHp": SpinboxElement(
                 guiElements=[self.ui.spinBoxMaxHpChar1,
                              self.ui.spinBoxMaxHpChar2,
                              self.ui.spinBoxMaxHpChar3],
                 dataKey='data.value.{}.max_hp',
                 headerKey='header.{}.max_hp',
+                headerCharacters=True,
+                dataCharacters=True
+            ),
+            "maxMp": SpinboxElement(
+                guiElements=[self.ui.spinBoxMaxMpChar1,
+                             self.ui.spinBoxMaxMpChar2,
+                             self.ui.spinBoxMaxMpChar3],
+                dataKey='data.value.{}.max_mp',
+                headerKey='header.{}.max_mp',
                 headerCharacters=True,
                 dataCharacters=True
             ),
