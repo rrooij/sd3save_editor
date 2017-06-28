@@ -211,7 +211,7 @@ def read_save(filepath):
 
 def write_save(filepath, data):
     for entry in data:
-        if "data" in entry.data:
+        if entry and "data" in entry.data:
             del entry.data.data
     open(filepath, 'wb').write(save_format.build(data))
 
