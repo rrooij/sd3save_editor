@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (QMainWindow, QFileDialog,
                              QMessageBox, QTableWidgetItem)
-from datetime import timedelta
+
 from sd3save_editor.gui.mainwindow_ui import Ui_MainWindow
 from sd3save_editor.gui.itemtabledelegate import ItemTableDelegate
 from sd3save_editor.gui.datatype import (ComboBoxElement, LineEditElement,
