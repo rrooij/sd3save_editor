@@ -3,11 +3,13 @@ PACKAGE_NAME=python3-sd3save-editor_$(VERSION)_all
 
 .PHONY: package_deb
 package_deb:
-	fpm -s python -d python3-pyqt5 --python-bin=python3 --python-package-name-prefix python3 -t deb setup.py
+	fpm -s python --no-python-dependencies -d python3-pyqt5 --python-bin=python3 --python-package-name-prefix python3 -t deb setup.py
 	mkdir tmp_extracted
 	dpkg-deb -R $(PACKAGE_NAME).deb tmp_extracted
 	mkdir -p tmp_extracted/usr/share/applications
-	cp sd3save_editor.desktop tmp_extracted/usr/share/applications/
+	cp -r sd3save_editor.desktop tmp_extracted/usr/share/applications/
+	cp -r venv/lib/python3.5/site-packages/construct tmp_extracted/usr/local/lib/python3.5/dist-packages/
+	cp -r venv/lib/python3.5/site-packages/scalpl* tmp_extracted/usr/local/lib/python3.5/dist-packages/
 	dpkg-deb -b tmp_extracted $(PACKAGE_NAME).deb
 	rm -rf tmp_extracted
 
