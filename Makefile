@@ -10,5 +10,7 @@ package_deb:
 	7z a dist/windows_exe.7z dist/sd3save_editor
 
 clean:
-	$(RM) *.deb
+	$(RM) ../$(PACKAGE_NAME).deb
+	$(RM) ../$(PACKAGE_NAME).tar.gz
+	$(RM) -r debian/python3-sd3save-editor
 	$(RM) -r dist/*
