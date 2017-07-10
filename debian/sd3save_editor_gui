@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/opt/venvs/python3-sd3save-editor/bin/sd3save_editor_gui

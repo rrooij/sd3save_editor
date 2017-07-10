@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=SD3 Save Editor
+Categories=Game
+Comment=A Seiken Densetsu 3 save editor
+Exec=/opt/venvs/python3-sd3save-editor/bin/sd3save_editor_gui
+Terminal=false

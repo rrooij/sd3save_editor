@@ -1,0 +1,20 @@
+Source: python3-sd3save-editor
+Section: python
+Priority: extra
+Maintainer: Robin <rderooij685@gmail.com>
+Build-Depends: debhelper (>= 9), python3, dh-virtualenv (>= 0.8), python3-pyqt5
+Standards-Version: 3.9.5
+
+Package: python3-sd3save-editor
+Version: 0.5.2
+License: GPL-3.0
+Vendor: none
+Architecture: all
+Maintainer: Robin <rderooij685@gmail.com>
+Installed-Size: 107
+Pre-Depends: dpkg (>= 1.16.1)
+Depends: python3-pyqt5, python3
+Section: python
+Priority: extra
+Homepage: https://github.com/rrooij/sd3save_editor
+Description: Seiken Densetsu 3 Save Editor
