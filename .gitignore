@@ -100,3 +100,4 @@ ENV/
 
 # for vim
 *~
+debian/python3-sd3save-editor
