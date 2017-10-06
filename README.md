@@ -8,6 +8,9 @@ It has the following features for now:
 * Change player names
 * Change location
 * Change max HP and current HP
+* View and manipulate player stats
+* Change the currently playing audio track
+* View and update item inventory
 
 **Please finish the game without cheating first if you planned
   to do this by editing your save.
