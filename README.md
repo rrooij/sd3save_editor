@@ -46,10 +46,6 @@ There is also a nice .deb file available on the [Releases](https://github.com/rr
 Check out the [Releases](https://github.com/rrooij/sd3save_editor/releases) page. It will contain a Windows
 binary.
 
-# Limitations
-
-Only the first save entry is editable.
-
 # Warning
 
 Backup your save before messing with it!

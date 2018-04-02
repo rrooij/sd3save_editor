@@ -97,7 +97,7 @@ class MainWindow(QMainWindow):
 
     def setTableData(self):
         self.ui.storageTableWidget.blockSignals(True)
-        items = save.read_all_storage_items_amount(self.saveData)
+        items = save.read_all_storage_items_amount(self.saveData, self.saveIndex)
         self.ui.storageTableWidget.setRowCount(len(items))
         for idx, item in enumerate(items):
             itemNameWidget = QTableWidgetItem(item[0])
@@ -117,6 +117,20 @@ class MainWindow(QMainWindow):
         self.ui.c2NameLineEdit.setMaxLength(6)
         self.ui.c3NameLineEdit.setMaxLength(6)
 
+    def initSaveEntryComboBox(self):
+        self.ui.saveIndexComboBox.clear()
+        for x in range(0, 3):
+            if self.saveData[x]:
+                self.ui.saveIndexComboBox.addItem("Save entry {}".format(x + 1), x)
+
+        self.ui.saveIndexComboBox.activated.connect(self.saveEntryChanged)
+
+    def saveEntryChanged(self, index):
+        saveIndex = self.ui.saveIndexComboBox.itemData(index)
+        self.saveIndex = saveIndex
+        self.initData()
+        self.setTableData()
+
     def initComboBox(self):
         self.ui.locationComboBox.addItems(game_data.parse_locations_json())
         self.ui.tracksComboBox.addItems(game_data.parse_tracks_json())
@@ -133,7 +147,8 @@ class MainWindow(QMainWindow):
         try:
             self.saveGuiData()
             save.write_storage_item_amounts(self.saveData,
-                                            self.editedStorageItems)
+                                            self.editedStorageItems,
+                                            self.saveIndex)
             save.write_save(self.filename, self.saveData)
             QMessageBox.information(self, "Succesfully saved",
                                           "Succesfully saved")
@@ -157,5 +172,6 @@ class MainWindow(QMainWindow):
                 self.initData()
                 self.setTableData()
                 self.initSaveEvent()
+                self.initSaveEntryComboBox()
             except Exception as ex:
                 QMessageBox.warning(self, "Can't open Seiken3 save", str(ex))
