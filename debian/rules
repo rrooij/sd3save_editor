@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-export DH_VIRTUALENV_ARGUMENTS=-p /usr/bin/python3.5 --system-site-packages
+export DH_VIRTUALENV_ARGUMENTS=-p /usr/bin/python3 --system-site-packages
 export DH_VIRTUALENV_INSTALL_ROOT=/opt/venvs/
 %:
 	dh $@ --buildsystem=dh_virtualenv
