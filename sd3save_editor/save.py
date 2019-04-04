@@ -1,6 +1,6 @@
 from sd3save_editor import checksum, game_data
 from construct import (Adapter, Byte, Bytes, Checksum, Const, Struct,
-                       Int8sl, Int16sl, Int16ub, Int16ul, Int32sl,
+                       Int8sl, Int16sl, Int16ub, Int24ul, Int32sl,
                        Sequence, this, RawCopy, Optional)
 
 
@@ -175,8 +175,8 @@ save_data = Struct(
     "char3"/character_stats,
     "unclear3"/Bytes(110),
     "character_names"/CharacterNameAdapter(Bytes(12))[3],
-    "luc"/Int16ul,
-    "unclear4"/Bytes(529),
+    "luc"/Int24ul,
+    "unclear4"/Bytes(528),
     "item_storage"/Int8sl[103],
     "unclear5"/Bytes(27),
     "location"/Int16sl,
