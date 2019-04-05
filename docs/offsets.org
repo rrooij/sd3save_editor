@@ -66,7 +66,6 @@ All characters will be covered if this is not the case.
 
 | Name                 | Offset  |
 |----------------------+---------|
-| Nothing              | 6A5     |
 | Paladin's Proof      | 6A6     |
 | Lord's Proof         | 6A7     |
 | Master's Proof       | 6A8     |
@@ -169,4 +168,3 @@ All characters will be covered if this is not the case.
 | Dragon's Eye (dummy) | 709     |
 | Illusion Mirror      | 70A     |
 | Demon Statue (dummy) | 70B     |
-| Nothing (dummies)    | 70C-7A4 |
