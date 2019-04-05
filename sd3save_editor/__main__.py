@@ -18,8 +18,7 @@ def main():
         sys.exit(-1)
     if (args.location):
         save_data[0].data.value.location = args.location
-
-    save.write_save_stream(args.file, save_data)
+        save.write_save_stream(args.file, save_data)
     args.file.close()
     sys.exit(0)
 
