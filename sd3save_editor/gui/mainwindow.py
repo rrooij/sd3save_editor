@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.initFileOpenEvents()
         self.initChangeNameInput()
-        self.saveIndex = 0  # TODO let the user decide this
+        self.saveIndex = None
         self.guiData = {
             "currentHp": SpinboxElement(
                 guiElements=[self.ui.spinBoxCurrentHpChar1,
@@ -167,6 +167,7 @@ class MainWindow(QMainWindow):
         if self.filename:
             try:
                 self.saveData = save.read_save(self.filename)
+                self.saveIndex = next(index for index, value in enumerate(self.saveData) if value is not None)
                 self.ui.saveButton.setEnabled(True)
                 self.ui.actionSave.setEnabled(True)
                 self.initData()

@@ -1,7 +1,7 @@
 from sd3save_editor import checksum, game_data
 from construct import (Adapter, Byte, Bytes, Checksum, Const, Struct,
                        Int8sl, Int16sl, Int16ub, Int24ul, Int32sl,
-                       Sequence, this, RawCopy, Optional)
+                       Sequence, this, RawCopy, Optional, Padded)
 
 
 class TimeAdapter(Adapter):
@@ -191,13 +191,14 @@ save_entry = Struct(
     "checksum"/Checksum(Int16ub,
                         lambda data: checksum.sum16_checksum(data),
                         this.data.data)
+
 )
 
 
 save_format = Sequence(
+    Padded(2048, Optional(save_entry)),
+    Padded(2048, Optional(save_entry)),
     Optional(save_entry),
-    Optional(save_entry),
-    Optional(save_entry)
 )
 
 
