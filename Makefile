@@ -6,7 +6,7 @@ PACKAGE_NAME=python3-sd3save-editor_$(VERSION)_all
 package_deb:
 	dpkg-buildpackage -us -uc
 
-7zip_windows: package_exe
+7zip_windows:
 	7z a dist/windows_exe.7z dist/sd3save_editor
 
 clean:
