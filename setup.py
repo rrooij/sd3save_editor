@@ -14,7 +14,7 @@ setup(name='sd3save_editor',
               'sd3save_editor_cli = sd3save_editor.__main__:main'
               ],
           'gui_scripts': [
-              'sd3save_editor_gui = sd3save_editor.gui.__main__.py:main'
+              'sd3save_editor_gui = sd3save_editor.gui.__main__:main'
               ]
           },
       install_requires=['construct', 'scalpl']
