@@ -97,6 +97,22 @@ class CharacterNameAdapter(Adapter):
         return zeroes
 
 
+class LocationAdapter(Adapter):
+    """Location data appears to be loaded as a 12bit integer by the game
+       This works around the absence of such a type in python core, it functions
+       by truncating 4 bits from the provided 16, and zeroes out the leading 4
+       bits on writing
+    """
+    def _decode(self, obj, context):
+        int16 = int.from_bytes(obj, byteorder='little')
+        bit_str12 = bin(int16)[2:].zfill(16)[4:]
+        return int(bit_str12, 2)
+
+    def _encode(self, obj, context):
+        bit_str = '0000%s' % bin(obj)[2:].zfill(16)[4:]
+        return int(bit_str, 2).to_bytes(2, byteorder='little')
+
+
 char_header = Struct(
     "name"/CharacterNameAdapter(Bytes(12)),
     "lvl"/Int8sl,
@@ -179,7 +195,7 @@ save_data = Struct(
     "unclear4"/Bytes(530),
     "item_storage"/Int8sl[102],
     "unclear5"/Bytes(26),
-    "location"/Int16sl,
+    "location"/LocationAdapter(Bytes(2)),
     "unclear6"/Bytes(46),
     "item_ring"/Int8sl[10],
     "unclear7"/Bytes(158)
