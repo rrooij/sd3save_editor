@@ -97,7 +97,8 @@ class MainWindow(QMainWindow):
 
     def setTableData(self):
         self.ui.storageTableWidget.blockSignals(True)
-        items = save.read_all_storage_items_amount(self.saveData, self.saveIndex)
+        items = save.read_all_storage_items_amount(self.saveData,
+                                                   self.saveIndex)
         self.ui.storageTableWidget.setRowCount(len(items))
         for idx, item in enumerate(items):
             itemNameWidget = QTableWidgetItem(item[0])
@@ -121,7 +122,8 @@ class MainWindow(QMainWindow):
         self.ui.saveIndexComboBox.clear()
         for x in range(0, 3):
             if self.saveData[x]:
-                self.ui.saveIndexComboBox.addItem("Save entry {}".format(x + 1), x)
+                self.ui.saveIndexComboBox.addItem("Save entry {}".
+                                                  format(x + 1), x)
 
         self.ui.saveIndexComboBox.activated.connect(self.saveEntryChanged)
 
@@ -167,7 +169,9 @@ class MainWindow(QMainWindow):
         if self.filename:
             try:
                 self.saveData = save.read_save(self.filename)
-                self.saveIndex = next(index for index, value in enumerate(self.saveData) if value is not None)
+                self.saveIndex = next(index for index,
+                                      value in enumerate(self.saveData)
+                                      if value is not None)
                 self.ui.saveButton.setEnabled(True)
                 self.ui.actionSave.setEnabled(True)
                 self.initData()
