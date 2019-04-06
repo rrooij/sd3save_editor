@@ -17,6 +17,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.initFileOpenEvents()
         self.initChangeNameInput()
+        self.initSaveEvent()
         self.saveIndex = None
         self.guiData = {
             "currentHp": SpinboxElement(
@@ -176,7 +177,6 @@ class MainWindow(QMainWindow):
                 self.ui.actionSave.setEnabled(True)
                 self.initData()
                 self.setTableData()
-                self.initSaveEvent()
                 self.initSaveEntryComboBox()
             except Exception as ex:
                 QMessageBox.warning(self, "Can't open Seiken3 save", str(ex))
