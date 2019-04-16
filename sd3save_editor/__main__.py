@@ -15,7 +15,7 @@ def main():
     parser.add_argument("--player3-name", type=str, help="Name of the third player")
     parser.add_argument("--luc", type=int, help="""Amount of money. Warning: putting too much.
                                                    Warning: too much money that the game can't
-                                                            handle will corrupt your safe""")
+                                                   handle will corrupt your save""")
 
     args = parser.parse_args()
     save_data = save.save_format.parse(args.file.read())
