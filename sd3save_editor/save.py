@@ -235,7 +235,7 @@ def write_save(filepath, data):
 
 def write_save_stream(stream, data):
     for entry in data:
-        if "data" in entry.data:
+        if entry and "data" in entry.data:
             del entry.data.data
     stream.seek(0)
     stream.write(save_format.build(data))
