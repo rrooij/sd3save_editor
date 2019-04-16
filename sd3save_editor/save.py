@@ -252,6 +252,8 @@ def check_valid_save(save_data):
 
 def write_character_names(save_data, character_names, index=0):
     """Write character names to save data"""
+    if any(len(name) > 6 for name in character_names):
+        raise NameTooLongException("One of the character names is too long")
     save_data[index].data.value.character_names = character_names
     save_data[index].header.char1.name = character_names[0]
     save_data[index].header.char2.name = character_names[1]
