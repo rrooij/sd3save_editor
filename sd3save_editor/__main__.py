@@ -7,16 +7,22 @@ import sd3save_editor.save as save
 
 def main():
     parser = argparse.ArgumentParser(description="Edit a Seiken Densetsu 3 save file")
-    parser.add_argument("file", type=argparse.FileType("r+b"), help="The Seiken3 save (srm format)")
-    parser.add_argument("entry", type=int, help="Save entry", choices=[1, 2, 3])
-    parser.add_argument("--location", type=int, help="ID of the in-game location")
-    parser.add_argument("--player1-name", type=str, help="Name of the first player")
-    parser.add_argument("--player2-name", type=str, help="Name of the second player")
-    parser.add_argument("--player3-name", type=str, help="Name of the third player")
-    parser.add_argument("--luc", type=int, help="""Amount of money. Warning: putting too much.
-                                                   Warning: too much money that the game can't
-                                                   handle will corrupt your save""")
-
+    parser.add_argument("file", type=argparse.FileType("r+b"),
+                        help="The Seiken3 save (srm format)")
+    parser.add_argument("entry", type=int,
+                        help="Save entry", choices=[1, 2, 3])
+    parser.add_argument("--location", type=int,
+                        help="ID of the in-game location")
+    parser.add_argument("--player1-name", type=str,
+                        help="Name of the first player")
+    parser.add_argument("--player2-name", type=str,
+                        help="Name of the second player")
+    parser.add_argument("--player3-name", type=str,
+                        help="Name of the third player")
+    parser.add_argument("--luc", type=int,
+                        help="""Amount of money. Warning: putting too much.
+                                Warning: too much money that the game can't
+                                handle will corrupt your save""")
     args = parser.parse_args()
     save_data = save.save_format.parse(args.file.read())
     save_index = args.entry - 1
@@ -47,6 +53,7 @@ def main():
     save.write_save_stream(args.file, save_data)
     args.file.close()
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
