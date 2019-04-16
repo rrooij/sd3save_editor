@@ -255,7 +255,7 @@ def write_character_names(save_data, character_names, index=0):
     save_data[index].data.value.character_names = character_names
     save_data[index].header.char1.name = character_names[0]
     save_data[index].header.char2.name = character_names[1]
-    save_data[index].header.char2.name = character_names[2]
+    save_data[index].header.char3.name = character_names[2]
 
 
 def write_storage_item_amounts(save_data, items, index=0):
