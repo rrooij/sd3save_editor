@@ -20,7 +20,7 @@ def main():
     parser.add_argument("--player3-name", type=str,
                         help="Name of the third player")
     parser.add_argument("--luc", type=int,
-                        help="""Amount of money. Warning: putting too much.
+                        help="""Amount of money.
                                 Warning: too much money that the game can't
                                 handle will corrupt your save""")
     args = parser.parse_args()
