@@ -90,7 +90,7 @@ class CharacterNameAdapter(Adapter):
     def _encode(self, obj, context):
         zeroes = bytearray(12)
         name = obj.encode('utf-16-le')
-        for key, character in self.SPECIAL_CHARACTERS.items():
+        for character in self.SPECIAL_CHARACTERS.values():
             name = name.replace(character['utf16'], character['seiken3'])
         for idx, char in enumerate(name):
             zeroes[idx] = char
