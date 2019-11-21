@@ -278,7 +278,7 @@ def read_all_storage_items_amount(save_data, index=0):
     for idx, item_name in enumerate(item_names):
         amount = save_data[index].data.value.item_storage[idx]
         if amount > 99:
-            raise AmountTooBigException("Amount should be lower than 100")
+            raise AmountTooBigException("Amount should be less than 100")
         items.append((item_name, amount))
     return items
 
