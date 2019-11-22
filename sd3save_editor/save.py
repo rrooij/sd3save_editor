@@ -82,7 +82,7 @@ class CharacterNameAdapter(Adapter):
 
     def _decode(self, obj, context):
         replace_char = '\x00'
-        for key, character in self.SPECIAL_CHARACTERS.items():
+        for character in self.SPECIAL_CHARACTERS.values():
             obj = obj.replace(character['seiken3'], character['utf16'])
         return obj.decode('utf-16-le',
                           'backslashreplace').rstrip(replace_char)
