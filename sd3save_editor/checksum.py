@@ -9,5 +9,5 @@ def sum16_checksum(bytes, big=True):
         count = count + 2
 
     if big:
-        sum = sum >> 8 | (sum << 8 & 0xff00) # Swap bytes for big endian
+        sum = sum >> 8 | (sum << 8 & 0xff00)  # Swap bytes for big endian
     return sum
