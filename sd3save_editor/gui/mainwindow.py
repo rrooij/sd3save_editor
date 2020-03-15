@@ -56,6 +56,13 @@ class MainWindow(QMainWindow):
                 headerCharacters=True,
                 dataCharacters=True
             ),
+            "strength": SpinboxElement(
+                guiElements=[self.ui.strengthLvlSpinBoxChar1,
+                             self.ui.strengthLvlSpinBoxChar2,
+                             self.ui.strengthLvlSpinBoxChar3],
+                dataKey='data.value.{}.strength',
+                dataCharacters=True,
+            ),
             "secondsPlayed": SpinboxElement(
                 guiElements=[self.ui.secondsSpinBox],
                 dataKey='header.time_played',

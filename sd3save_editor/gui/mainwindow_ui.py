@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -93,6 +95,12 @@ class Ui_MainWindow(object):
         self.spinBoxMaxMpChar1.setMaximum(999)
         self.spinBoxMaxMpChar1.setObjectName("spinBoxMaxMpChar1")
         self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.spinBoxMaxMpChar1)
+        self.strengthLvlLabel = QtWidgets.QLabel(self.tab_2)
+        self.strengthLvlLabel.setObjectName("strengthLvlLabel")
+        self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.strengthLvlLabel)
+        self.strengthLvlSpinBoxChar1 = QtWidgets.QSpinBox(self.tab_2)
+        self.strengthLvlSpinBoxChar1.setObjectName("strengthLvlSpinBoxChar1")
+        self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.strengthLvlSpinBoxChar1)
         self.gridLayout_3.addLayout(self.formLayout_3, 0, 0, 1, 1)
         self.tabsOverview.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
@@ -135,6 +143,12 @@ class Ui_MainWindow(object):
         self.spinBoxMaxMpChar2.setMaximum(999)
         self.spinBoxMaxMpChar2.setObjectName("spinBoxMaxMpChar2")
         self.formLayout_4.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.spinBoxMaxMpChar2)
+        self.strengthLvlLabel_2 = QtWidgets.QLabel(self.tab_3)
+        self.strengthLvlLabel_2.setObjectName("strengthLvlLabel_2")
+        self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.strengthLvlLabel_2)
+        self.strengthLvlSpinBoxChar2 = QtWidgets.QSpinBox(self.tab_3)
+        self.strengthLvlSpinBoxChar2.setObjectName("strengthLvlSpinBoxChar2")
+        self.formLayout_4.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.strengthLvlSpinBoxChar2)
         self.gridLayout_4.addLayout(self.formLayout_4, 0, 0, 1, 1)
         self.tabsOverview.addTab(self.tab_3, "")
         self.tab_4 = QtWidgets.QWidget()
@@ -177,6 +191,12 @@ class Ui_MainWindow(object):
         self.spinBoxMaxMpChar3.setMaximum(999)
         self.spinBoxMaxMpChar3.setObjectName("spinBoxMaxMpChar3")
         self.formLayout_5.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.spinBoxMaxMpChar3)
+        self.strengthLvlLabel_3 = QtWidgets.QLabel(self.tab_4)
+        self.strengthLvlLabel_3.setObjectName("strengthLvlLabel_3")
+        self.formLayout_5.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.strengthLvlLabel_3)
+        self.strengthLvlSpinBoxChar3 = QtWidgets.QSpinBox(self.tab_4)
+        self.strengthLvlSpinBoxChar3.setObjectName("strengthLvlSpinBoxChar3")
+        self.formLayout_5.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.strengthLvlSpinBoxChar3)
         self.gridLayout_5.addLayout(self.formLayout_5, 0, 0, 1, 1)
         self.tabsOverview.addTab(self.tab_4, "")
         self.tab_5 = QtWidgets.QWidget()
@@ -214,7 +234,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addLayout(self.formLayout_2, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 33))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -232,7 +252,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabsOverview.setCurrentIndex(0)
+        self.tabsOverview.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -249,18 +269,21 @@ class Ui_MainWindow(object):
         self.labelMaxHpChar1.setText(_translate("MainWindow", "Max HP"))
         self.labelCurrentMpChar1.setText(_translate("MainWindow", "Current MP"))
         self.labelMaxMpChar1.setText(_translate("MainWindow", "Max MP"))
+        self.strengthLvlLabel.setText(_translate("MainWindow", "Strength"))
         self.tabsOverview.setTabText(self.tabsOverview.indexOf(self.tab_2), _translate("MainWindow", "Character 1"))
         self.labelCharacter2Name.setText(_translate("MainWindow", "Name"))
         self.labelCurrentHpChar2.setText(_translate("MainWindow", "Current HP"))
         self.labelMaxHpChar2.setText(_translate("MainWindow", "Max HP"))
         self.labelCurrentMpChar2.setText(_translate("MainWindow", "Current MP"))
         self.labelMaxMpChar2.setText(_translate("MainWindow", "Max MP"))
+        self.strengthLvlLabel_2.setText(_translate("MainWindow", "Strength"))
         self.tabsOverview.setTabText(self.tabsOverview.indexOf(self.tab_3), _translate("MainWindow", "Character 2"))
         self.labelCharacter3Name.setText(_translate("MainWindow", "Name"))
         self.labelCurrentHpChar3.setText(_translate("MainWindow", "Current HP"))
         self.labelMaxHpChar3.setText(_translate("MainWindow", "Max HP"))
         self.labelCurrentMpChar3.setText(_translate("MainWindow", "Current MP"))
         self.labelMaxMpChar3.setText(_translate("MainWindow", "Max MP"))
+        self.strengthLvlLabel_3.setText(_translate("MainWindow", "Strength"))
         self.tabsOverview.setTabText(self.tabsOverview.indexOf(self.tab_4), _translate("MainWindow", "Character 3"))
         item = self.storageTableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Item"))
@@ -274,4 +297,3 @@ class Ui_MainWindow(object):
         self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
-

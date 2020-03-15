@@ -158,6 +158,16 @@
             </property>
            </widget>
           </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="strengthLvlLabel">
+            <property name="text">
+             <string>Strength</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QSpinBox" name="strengthLvlSpinBoxChar1"/>
+          </item>
          </layout>
         </item>
        </layout>
@@ -234,6 +244,16 @@
              <number>999</number>
             </property>
            </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="strengthLvlLabel_2">
+            <property name="text">
+             <string>Strength</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QSpinBox" name="strengthLvlSpinBoxChar2"/>
           </item>
          </layout>
         </item>
@@ -312,6 +332,16 @@
             </property>
            </widget>
           </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="strengthLvlLabel_3">
+            <property name="text">
+             <string>Strength</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QSpinBox" name="strengthLvlSpinBoxChar3"/>
+          </item>
          </layout>
         </item>
        </layout>
@@ -329,11 +359,11 @@
           <attribute name="horizontalHeaderCascadingSectionResizes">
            <bool>false</bool>
           </attribute>
-          <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>300</number>
-          </attribute>
           <attribute name="horizontalHeaderMinimumSectionSize">
            <number>50</number>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>300</number>
           </attribute>
           <attribute name="horizontalHeaderStretchLastSection">
            <bool>true</bool>
@@ -386,7 +416,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>33</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
