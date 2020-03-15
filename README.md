@@ -2,6 +2,8 @@
 
 Simple save editor made in Python.
 
+Tested on: Seiken Densetsu 3 (Japan) [En by LNF+Neill Corlett+SoM2Freak v1.01]
+
 It has the following features for now:
 
 * Change luc (the currency in the game)
