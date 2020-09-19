@@ -245,9 +245,7 @@ def check_valid_save(save_data):
     """Check if the save is valid. Not very reliable, but
        the least I can do for now to prevent people from
        messing up files"""
-    if not save_data[0] and not save_data[1] and not save_data[2]:
-        return False
-    return True
+    return save_data[0] or save_data[1] or save_data[2]
 
 
 def write_character_names(save_data, character_names, index=0):
