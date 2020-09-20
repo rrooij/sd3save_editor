@@ -1,2 +1,2 @@
 construct==2.8.22
-scalpl
+scalpl==0.4.0
