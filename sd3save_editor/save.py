@@ -8,10 +8,10 @@ class TimeAdapter(Adapter):
     """Convert seconds to seiken densetsu 3 time
        Time is saved as a 60th of a second
     """
-    def _decode(self, obj, context):
+    def _decode(self, obj, context, path):
         return int(obj / 60)
 
-    def _encode(self, obj, context):
+    def _encode(self, obj, context, path):
         return int(obj * 60)
 
 
@@ -80,14 +80,14 @@ class CharacterNameAdapter(Adapter):
         }
     }
 
-    def _decode(self, obj, context):
+    def _decode(self, obj, context, path):
         replace_char = '\x00'
         for character in self.SPECIAL_CHARACTERS.values():
             obj = obj.replace(character['seiken3'], character['utf16'])
         return obj.decode('utf-16-le',
                           'backslashreplace').rstrip(replace_char)
 
-    def _encode(self, obj, context):
+    def _encode(self, obj, context, path):
         zeroes = bytearray(12)
         name = obj.encode('utf-16-le')
         for character in self.SPECIAL_CHARACTERS.values():
@@ -103,12 +103,12 @@ class LocationAdapter(Adapter):
        by truncating 4 bits from the provided 16, and zeroes out the leading 4
        bits on writing
     """
-    def _decode(self, obj, context):
+    def _decode(self, obj, context, path):
         int16 = int.from_bytes(obj, byteorder='little')
         bit_str12 = bin(int16)[2:].zfill(16)[4:]
         return int(bit_str12, 2)
 
-    def _encode(self, obj, context):
+    def _encode(self, obj, context, path):
         bit_str = '0000%s' % bin(obj)[2:].zfill(16)[4:]
         return int(bit_str, 2).to_bytes(2, byteorder='little')
 

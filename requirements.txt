@@ -1,2 +1,2 @@
-construct==2.8.22
+construct==2.10.56
 scalpl==0.4.0
