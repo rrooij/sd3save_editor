@@ -17,7 +17,3 @@ def save_data():
 
 def test_check_valid_save_true(save_data):
     assert save.check_valid_save(save_data)
-
-
-if __name__ == '__main__':
-    unittest.main()
