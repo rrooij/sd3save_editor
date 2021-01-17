@@ -1,0 +1,3 @@
+construct==2.10.56
+scalpl==0.4.0
+pytest

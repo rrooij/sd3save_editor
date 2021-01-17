@@ -57,3 +57,4 @@ Backup your save before messing with it!
 * Location ID's were found [here](https://www.romhacking.net/documents/662/) and made possible by RomHacking.net user [giangurgolo](https://www.romhacking.net/community/801/)
 * Some offsets were also found [here](https://www.gamefaqs.com/snes/588648-seiken-densetsu-3/faqs/9788) 
   by GameFAQs user [DavieZBOY](https://www.gamefaqs.com/community/DavieZBOY)
+* Test save downloaded from https://www.fantasyanime.com/mana/som2saves.htm
