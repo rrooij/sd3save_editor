@@ -8,7 +8,7 @@ ifeq ($(OS),Windows_NT)
 	FOLDER_SEPERATOR=";"
 	TARGET=dist/sd3save_editor.exe
 else ifeq ($(shell uname),Darwin)
-	PYINSTALLER_FLAGS=""
+	PYINSTALLER_FLAGS=
 endif
 
 ifeq ($(OS),Windows_NT)
