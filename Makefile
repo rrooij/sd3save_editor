@@ -1,7 +1,18 @@
 VERSION=0.5.3
 PACKAGE_NAME=python3-sd3save-editor_$(VERSION)_all
+FOLDER_SEPERATOR=":"
+TARGET=dist/sd3save_editor
 
-.PHONY: package_deb
+ifeq ($(OS),Windows_NT)
+	FOLDER_SEPERATOR=";"
+	TARGET=dist/sd3save_editor.exe
+endif
+
+$(TARGET):
+	pyinstaller sd3save_editor/gui/__main__.py -n sd3save_editor \
+	--add-data "sd3save_editor/data"$(FOLDER_SEPERATOR)"sd3save_editor/data" -F
+
+.PHONY: $(TARGET)
 
 package_deb:
 	dpkg-buildpackage -us -uc
