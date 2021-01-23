@@ -2,6 +2,14 @@ VERSION=0.5.3
 PACKAGE_NAME=python3-sd3save-editor_$(VERSION)_all
 FOLDER_SEPERATOR=":"
 TARGET=dist/sd3save_editor
+PYINSTALLER_FLAGS="-F"
+
+ifeq ($(OS),Windows_NT)
+	FOLDER_SEPERATOR=";"
+	TARGET=dist/sd3save_editor.exe
+else ifeq ($(shell uname),Darwin)
+	PYINSTALLER_FLAGS=""
+endif
 
 ifeq ($(OS),Windows_NT)
 	FOLDER_SEPERATOR=";"
@@ -10,7 +18,7 @@ endif
 
 $(TARGET):
 	pyinstaller sd3save_editor/gui/__main__.py -n sd3save_editor \
-	--add-data "sd3save_editor/data"$(FOLDER_SEPERATOR)"sd3save_editor/data" -F
+	--add-data "sd3save_editor/data"$(FOLDER_SEPERATOR)"sd3save_editor/data" $(PYINSTALLER_FLAGS)
 
 .PHONY: $(TARGET)
 
