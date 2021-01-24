@@ -35,13 +35,10 @@ sudo apt install python3-pip python3-pyqt5 git
 git clone https://github.com/rrooij/sd3save_editor.git
 cd sd3save_editor
 pip3 install -r requirements.txt
-chmod +x start_gui.sh
-./start_gui.sh
+python3 -m sd3save_editor.gui
 ```
 
-You can run start_gui.sh afterwards in Nautilus or another file explorer.
-
-There is also a nice .deb file available on the [Releases](https://github.com/rrooij/sd3save_editor/releases) page.
+There is also an executable available on the [Releases](https://github.com/rrooij/sd3save_editor/releases) page.
 
 # Running on Windows
 
