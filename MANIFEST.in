@@ -1,2 +1,0 @@
-include *.md
-recursive-include sd3save_editor/data *.json
