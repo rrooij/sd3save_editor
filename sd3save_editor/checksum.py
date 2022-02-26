@@ -1,4 +1,4 @@
-def sum16_checksum(bytes, big=True):
+def sum16_checksum(bytes, big=True) -> int:
     sum = 0
     count_to = len(bytes)
     count = 0

@@ -8,10 +8,10 @@ class TimeAdapter(Adapter):
     """Convert seconds to seiken densetsu 3 time
        Time is saved as a 60th of a second
     """
-    def _decode(self, obj, context, path):
+    def _decode(self, obj, context, path) -> int:
         return int(obj / 60)
 
-    def _encode(self, obj, context, path):
+    def _encode(self, obj, context, path) -> int:
         return int(obj * 60)
 
 
@@ -103,12 +103,12 @@ class LocationAdapter(Adapter):
        by truncating 4 bits from the provided 16, and zeroes out the leading 4
        bits on writing
     """
-    def _decode(self, obj, context, path):
+    def _decode(self, obj, context, path) -> int:
         int16 = int.from_bytes(obj, byteorder='little')
         bit_str12 = bin(int16)[2:].zfill(16)[4:]
         return int(bit_str12, 2)
 
-    def _encode(self, obj, context, path):
+    def _encode(self, obj, context, path) -> bytes:
         bit_str = '0000%s' % bin(obj)[2:].zfill(16)[4:]
         return int(bit_str, 2).to_bytes(2, byteorder='little')
 
@@ -241,7 +241,7 @@ def write_save_stream(stream, data):
     stream.write(save_format.build(data))
 
 
-def check_valid_save(save_data):
+def check_valid_save(save_data) -> bool:
     """Check if the save is valid. Not very reliable, but
        the least I can do for now to prevent people from
        messing up files"""
