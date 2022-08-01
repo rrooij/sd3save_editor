@@ -1,15 +1,15 @@
 # Character Encoding
 
-When converting from unicode to cartridge, more than one unicode codepoint can be mapped to one cartridge codepoint. On the other hand, when converting from cartridge to unicode, only one unicode codepoint will be assigned. For example, the ASCII A and the fullwidth A will both be mapped to the cartridge A. In reverse, the cartridge A will only be mapped to the ASCII A and not the fullwidth A.
+When converting from Unicode to cartridge, more than one Unicode codepoint can be mapped to one cartridge codepoint. On the other hand, when converting from cartridge to Unicode, only one Unicode codepoint will be assigned. For example, the ASCII A and the full-width A will both be mapped to the cartridge A. In reverse, the cartridge A will only be mapped to the ASCII A and not the full-width A.
 
 **Remarks**
 
 Characters in the ASCII range
 
 - The different language encodings basically follow the ASCII encoding, followed by a number of additional characters in the range from 007F to 009F. The only exception is the Spanish encoding where the lower case characters happen to be shifted.
-- When converting from cartridge to unicode, the character in the ASCII range is chosen over any other variants.
-- The only exception is the Japanese fullwidth encoding, which chooses the fullwidth character over the others.
-- There is also a small number of characters in the ASCII range where the visual glyph used in the cartridge encoding actually resembles a unicode character outside of the ASCII range. In particular, these characters are the asterisk operator, the minus sign, the broken bar, and the small tilde. Yet, when converting back, the codepoint from the ASCII range is to be used.
+- When converting from cartridge to Unicode, the character in the ASCII range is chosen over any other variants.
+- The only exception is the Japanese full-width encoding, which chooses the full-width character over the others.
+- There is also a small number of characters in the ASCII range where the visual glyph used in the cartridge encoding actually resembles a Unicode character outside of the ASCII range. In particular, these characters are the asterisk operator, the minus sign, the broken bar, and the small tilde. Yet, when converting back, the codepoint from the ASCII range is to be used.
 
 Hiragana, Katakana and Kanji
 
@@ -26,14 +26,14 @@ Other Characters
 European Languages
 
 1. ASCII characters
-2. ASCII characters (fullwidth)
+2. ASCII characters (full-width)
 3. ASCII character variants
 4. Language specific characters
 
 Japanese
 
 1. ASCII characters
-2. ASCII characters (fullwidth)
+2. ASCII characters (full-width)
 3. ASCII character variants
 4. Japanese specific characters (ASCII range)
 5. Japanese specific characters (other range)
@@ -446,7 +446,7 @@ Japanese
 | 009F | N/A |
 
 (1) ä / ö / ü are already encoded at 008F [ä] / 0091 [ö] / 0093 [ü]  
-(2) f. does not have a respective unicode codepoint
+(2) f. does not have a respective Unicode codepoint
 
 ### Italian Additions
 
@@ -489,7 +489,7 @@ Japanese
 | 009E [▼] | U+25BC BLACK DOWN-POINTING TRIANGLE [▼] |
 | 009F [♥] | U+2665 BLACK HEART SUIT [♥]<br/>U+2764 HEAVY BLACK HEART [❤] |
 
-(1) ll does not have a respective unicode codepoint
+(1) ll does not have a respective Unicode codepoint
 
 ### Spanish Additions
 
@@ -565,7 +565,7 @@ Japanese
 | 009E [▼] | U+25BC BLACK DOWN-POINTING TRIANGLE [▼] |
 | 009F [♥] | U+2665 BLACK HEART SUIT [♥]<br/>U+2764 HEAVY BLACK HEART [❤] |
 
-(1) ll does not have a respective unicode codepoint
+(1) ll does not have a respective Unicode codepoint
 
 ## Appendix A: Comparison of All Characters by Language
 
@@ -574,8 +574,8 @@ This is a list of all characters in the range from 0020 to 009F by language as t
 **Remarks**
 
 - Problematic characters are marked with a red square. They are exempt from encoding.
-- Japanese uses fullwidth characters.
-- Slected characters of the Japanese encoding beyond 009F are listed separatedly.
+- Japanese uses full-width characters.
+- Selected characters of the Japanese encoding beyond 009F are listed separately.
 - Furthermore, Japanese kana and kanji are listed as N/A.
 
 | | Japanese | English | German | French | Italian | Spanish |
