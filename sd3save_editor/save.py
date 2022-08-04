@@ -1,7 +1,8 @@
 from sd3save_editor import checksum, game_data
 from construct import (Adapter, Byte, Bytes, Checksum, Const, Struct,
                        Int8sl, Int16sl, Int16ub, Int24ul, Int32sl,
-                       Sequence, this, RawCopy, Optional, Padded)
+                       Sequence, Switch, this, RawCopy, Optional, Padded)
+from enum import Enum
 
 
 class TimeAdapter(Adapter):
@@ -97,6 +98,73 @@ class CharacterNameAdapter(Adapter):
         return zeroes
 
 
+class BaseCharacterNameAdapter(Adapter):
+
+    decoding_dict = {}
+    encoding_dict = {}
+
+    def _decode(self, obj, context, path):
+        name = obj.decode('utf-16-le');
+        name = "".join([self.decoding_dict[char] for char in name if char in self.decoding_dict])
+        return name;
+
+    def _encode(self, obj, context, path):
+        zeroes = bytearray(12)
+        name = "".join([self.encoding_dict[char] for char in obj if char in self.encoding_dict])
+        name = name.encode('utf-16-le')
+        for idx, char in enumerate(name):
+            zeroes[idx] = char
+        return zeroes
+
+
+class EnglishCharacterNameAdapter(BaseCharacterNameAdapter):
+
+    def __init__(self, subcon):
+        Adapter.__init__(self, subcon)
+        self.decoding_dict = game_data.parse_encoding_english_to_unicode_json()
+        self.encoding_dict = game_data.parse_encoding_unicode_to_english_json()
+
+
+class FrenchCharacterNameAdapter(BaseCharacterNameAdapter):
+
+    def __init__(self, subcon):
+        Adapter.__init__(self, subcon)
+        self.decoding_dict = game_data.parse_encoding_french_to_unicode_json()
+        self.encoding_dict = game_data.parse_encoding_unicode_to_french_json()
+
+
+class GermanCharacterNameAdapter(BaseCharacterNameAdapter):
+
+    def __init__(self, subcon):
+        Adapter.__init__(self, subcon)
+        self.decoding_dict = game_data.parse_encoding_german_to_unicode_json()
+        self.encoding_dict = game_data.parse_encoding_unicode_to_german_json()
+
+
+class ItalianCharacterNameAdapter(BaseCharacterNameAdapter):
+
+    def __init__(self, subcon):
+        Adapter.__init__(self, subcon)
+        self.decoding_dict = game_data.parse_encoding_italian_to_unicode_json()
+        self.encoding_dict = game_data.parse_encoding_unicode_to_italian_json()
+
+
+class JapaneseCharacterNameAdapter(BaseCharacterNameAdapter):
+
+    def __init__(self, subcon):
+        Adapter.__init__(self, subcon)
+        self.decoding_dict = game_data.parse_encoding_japanese_to_unicode_json()
+        self.encoding_dict = game_data.parse_encoding_unicode_to_japanese_json()
+
+
+class SpanishCharacterNameAdapter(BaseCharacterNameAdapter):
+
+    def __init__(self, subcon):
+        Adapter.__init__(self, subcon)
+        self.decoding_dict = game_data.parse_encoding_spanish_to_unicode_json()
+        self.encoding_dict = game_data.parse_encoding_unicode_to_spanish_json()
+
+
 class LocationAdapter(Adapter):
     """Location data appears to be loaded as a 12bit integer by the game
        This works around the absence of such a type in python core, it functions
@@ -113,8 +181,27 @@ class LocationAdapter(Adapter):
         return int(bit_str, 2).to_bytes(2, byteorder='little')
 
 
+class Language(Enum):
+    ENGLISH = 1
+    FRENCH = 2
+    GERMAN = 3
+    ITALIAN = 4
+    JAPANESE = 5
+    SPANISH = 6
+
+char_name_language = Language.ENGLISH;
+
+char_name_adapter = Switch(lambda this: char_name_language, {
+    Language.ENGLISH: EnglishCharacterNameAdapter(Bytes(12)),
+    Language.FRENCH: FrenchCharacterNameAdapter(Bytes(12)),
+    Language.GERMAN: GermanCharacterNameAdapter(Bytes(12)),
+    Language.ITALIAN: ItalianCharacterNameAdapter(Bytes(12)),
+    Language.JAPANESE: JapaneseCharacterNameAdapter(Bytes(12)),
+    Language.SPANISH: SpanishCharacterNameAdapter(Bytes(12)),
+}, default=CharacterNameAdapter(Bytes(12)))
+
 char_header = Struct(
-    "name"/CharacterNameAdapter(Bytes(12)),
+    "name"/char_name_adapter,
     "lvl"/Int8sl,
     "current_hp"/Int16sl,
     "max_hp"/Int16sl,
@@ -190,7 +277,7 @@ save_data = Struct(
     "unclear2"/Bytes(112),
     "char3"/character_stats,
     "unclear3"/Bytes(110),
-    "character_names"/CharacterNameAdapter(Bytes(12))[3],
+    "character_names"/char_name_adapter[3],
     "luc"/Int24ul,
     "unclear4"/Bytes(530),
     "item_storage"/Int8sl[102],

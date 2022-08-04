@@ -17,6 +17,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.initFileOpenEvents()
         self.initChangeNameInput()
+        self.initLanguageComboBox()
         self.initSaveEvent()
         self.saveIndex = None
         self.guiData = {
@@ -125,6 +126,27 @@ class MainWindow(QMainWindow):
         self.ui.c1NameLineEdit.setMaxLength(6)
         self.ui.c2NameLineEdit.setMaxLength(6)
         self.ui.c3NameLineEdit.setMaxLength(6)
+        self.ui.c1NameLineEdit.textChanged.connect(self.validateCharacterNames)
+        self.ui.c2NameLineEdit.textChanged.connect(self.validateCharacterNames)
+        self.ui.c3NameLineEdit.textChanged.connect(self.validateCharacterNames)
+
+    def initLanguageComboBox(self):
+        self.ui.languageComboBox.activated.connect(self.languageChanged)
+
+    def languageChanged(self, index):
+        save.char_name_language = save.Language(index + 1)
+        self.validateCharacterNames()
+
+    def validateCharacterNames(self):
+        for lineEdit in [
+            self.ui.c1NameLineEdit,
+            self.ui.c2NameLineEdit,
+            self.ui.c3NameLineEdit,
+        ]:
+            lineEdit.setText(
+                save.char_name_adapter.parse(
+                    save.char_name_adapter.build(
+                        lineEdit.text())))
 
     def initSaveEntryComboBox(self):
         self.ui.saveIndexComboBox.clear()
@@ -132,7 +154,6 @@ class MainWindow(QMainWindow):
             if self.saveData[x]:
                 self.ui.saveIndexComboBox.addItem("Save entry {}".
                                                   format(x + 1), x)
-
         self.ui.saveIndexComboBox.activated.connect(self.saveEntryChanged)
 
     def saveEntryChanged(self, index):
