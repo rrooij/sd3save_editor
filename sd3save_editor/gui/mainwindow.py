@@ -6,8 +6,12 @@ from sd3save_editor.gui.itemtabledelegate import ItemTableDelegate
 from sd3save_editor.gui.datatype import (ComboBoxElement, LineEditElement,
                                          SpinboxElement)
 from sd3save_editor.save import NameTooLongException
+from sd3save_editor.save import Language
 import sd3save_editor.save as save
 import sd3save_editor.game_data as game_data
+
+from pathlib import Path
+import re
 
 
 class MainWindow(QMainWindow):
@@ -18,6 +22,8 @@ class MainWindow(QMainWindow):
         self.initFileOpenEvents()
         self.initChangeNameInput()
         self.initLanguageComboBox()
+        self.autoLanguage = Language.ENGLISH;
+        self.updateLanguageComboBox();
         self.initSaveEvent()
         self.saveIndex = None
         self.guiData = {
@@ -133,8 +139,15 @@ class MainWindow(QMainWindow):
     def initLanguageComboBox(self):
         self.ui.languageComboBox.activated.connect(self.languageChanged)
 
+    def updateLanguageComboBox(self):
+        text = self.ui.languageComboBox.itemText(self.autoLanguage.value);
+        self.ui.languageComboBox.setItemText(0, "Auto -- {}".format(text))
+
     def languageChanged(self, index):
-        save.char_name_language = save.Language(index + 1)
+        if (index == 0):
+            save.char_name_language = self.autoLanguage
+        else:
+            save.char_name_language = Language(index)
         self.validateCharacterNames()
 
     def validateCharacterNames(self):
@@ -196,6 +209,13 @@ class MainWindow(QMainWindow):
                                           filter="Seiken3 Save (*.srm)"
                                           ))[0]
         if self.filename:
+            self.autoLanguage = self.detectLanguage(Path(self.filename).stem)
+            self.updateLanguageComboBox()
+            if self.ui.languageComboBox.currentIndex() == 0:
+                save.char_name_language = Language(self.autoLanguage.value)
+            else:
+                save.char_name_language = Language(self.ui.languageComboBox.currentIndex())
+        if self.filename:
             try:
                 self.saveData = save.read_save(self.filename)
                 self.saveIndex = next(index for index,
@@ -208,3 +228,52 @@ class MainWindow(QMainWindow):
                 self.initSaveEntryComboBox()
             except Exception as ex:
                 QMessageBox.warning(self, "Can't open Seiken3 save", str(ex))
+
+    @staticmethod
+    def detectLanguage(name):
+        # orignal Japanese release
+        if (re.search(r"\ASeiken Densetsu 3 \((J|Japan)\)\Z", name, re.IGNORECASE)):
+            return Language.JAPANESE
+        # translation patches
+        if (re.search(r"\A(SD3|SOM2|SEIKEN3)(E|EN|ENG)[0-9]*\Z", name, re.IGNORECASE)):
+            return Language.ENGLISH
+        if (re.search(r"\A(SD3|SOM2|SEIKEN3)(F|FR|FRA)[0-9]*\Z", name, re.IGNORECASE)):
+            return Language.FRENCH
+        if (re.search(r"\A(SD3|SOM2|SEIKEN3)(D|G|DE|DEU|GER)[0-9]*\Z", name, re.IGNORECASE)):
+            return Language.GERMAN
+        if (re.search(r"\A(SD3|SOM2|SEIKEN3)(I|IT|ITA)[0-9]*\Z", name, re.IGNORECASE)):
+            return Language.ITALIAN
+        if (re.search(r"\A(SD3|SOM2|SEIKEN3)(J|JA|JP|JAP)[0-9]*\Z", name, re.IGNORECASE)):
+            return Language.JAPANESE
+        if (re.search(r"\A(SD3|SOM2|SEIKEN3)(S|ES|SP|ESP|SPA)[0-9]*\Z", name, re.IGNORECASE)):
+            return Language.SPANISH
+        # translation patches (Italian exception)
+        if (re.search(r"\A(SD3|SOM2|SEIKEN3)_(JAP|ENG)_ITA_", name, re.IGNORECASE)):
+            return Language.ITALIAN
+        # translation authors
+        if (re.search(r"(\A|\W)(neill|corlett|som2freak)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.ENGLISH
+        if (re.search(r"(\A|\W)(terminus|copernic)\W", name, re.IGNORECASE)):
+            return Language.FRENCH
+        if (re.search(r"(\A|\W)(g-trans|special-man|lavosspawn)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.GERMAN
+        if (re.search(r"(\A|\W)(mumble|clomax|ombra|chester)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.ITALIAN
+        if (re.search(r"(\A|\W)(magno|vegetal|gibber)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.SPANISH
+        # language codes
+        if (re.search(r"(\A|\W)(en|eng|english)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.ENGLISH
+        if (re.search(r"(\A|\W)(fr|fra|french|français|francais)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.FRENCH
+        if (re.search(r"(\A|\W)(de|deu|ger|german|deutsch)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.GERMAN
+        if (re.search(r"(\A|\W)(it|ita|italian|italiano)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.ITALIAN
+        if (re.search(r"(\A|\W)(ja|jp|jap|japanese)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.JAPANESE
+        if (re.search(r"(\A|\W)(es|sp|esp|spa|spanish|español|espanol|castellano)(\Z|\W)", name, re.IGNORECASE)):
+            return Language.SPANISH
+        # fallback
+        return Language.ENGLISH
+

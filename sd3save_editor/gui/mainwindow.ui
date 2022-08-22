@@ -407,6 +407,11 @@
        <widget class="QComboBox" name="languageComboBox">
         <item>
          <property name="text">
+          <string>Auto</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>English by Neill Corlett V1.01</string>
          </property>
         </item>
