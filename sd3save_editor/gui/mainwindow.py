@@ -227,6 +227,8 @@ class MainWindow(QMainWindow):
                 self.setTableData()
                 self.initSaveEntryComboBox()
             except Exception as ex:
+                self.ui.saveButton.setEnabled(False)
+                self.ui.actionSave.setEnabled(False)
                 QMessageBox.warning(self, "Can't open Seiken3 save", str(ex))
 
     @staticmethod
