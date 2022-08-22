@@ -1,10 +1,10 @@
 # Language Support
 
 - Original Japanese Release
-- English Translation V1.01 by Neill Corlett 
-- French Translation RC1 by Terminus Traduction
-- German Translation V1.00 RC3 to V3.0 by G-Trans
-- Italian Translation V1.00b  by Clomax, Ombra, Chester
+- English Translation V1.01 by Neill Corlett, SoM2Freak
+- French Translation RC1 by Terminus Traduction (Copernic)
+- German Translation V1.00 RC3 to V3.0 by G-Trans (Special-Man, LavosSpawn)
+- Italian Translation V1.00b by Mumble Translations (Clomax, Ombra, Chester)
 - Spanish Translation V1.03 by Magno, Vegetal Gibber
 
 ## UI Changes

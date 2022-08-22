@@ -399,7 +399,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="languageLabel">
         <property name="text">
-         <string>Language</string>
+         <string>Translation Patch</string>
         </property>
        </widget>
       </item>
@@ -407,32 +407,32 @@
        <widget class="QComboBox" name="languageComboBox">
         <item>
          <property name="text">
-          <string>English</string>
+          <string>English by Neill Corlett V1.01</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>French</string>
+          <string>French by Terminus Traduction RC1</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>German</string>
+          <string>German by G-Trans V1.00 RC3 to V3.0</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Italian</string>
+          <string>Italian by Mumble Translations V1.00b</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Japanese</string>
+          <string>Japanese (Original Release)</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Spanish</string>
+          <string>Spanish by Magno and Vegetal Gibber</string>
          </property>
         </item>
        </widget>
