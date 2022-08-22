@@ -14,6 +14,8 @@ jobs:
               ARTIFACT_NAME: sd3save_editor_linux
             - os: windows-latest
               ARTIFACT_NAME: sd3save_editor_windows
+            - os: macos-latest
+              ARTIFACT_NAME: sd3save_editor_macos
 
     steps:
     - uses: actions/checkout@v1
