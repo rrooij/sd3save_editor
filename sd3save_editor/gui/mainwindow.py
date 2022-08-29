@@ -156,10 +156,11 @@ class MainWindow(QMainWindow):
             self.ui.c2NameLineEdit,
             self.ui.c3NameLineEdit,
         ]:
-            lineEdit.setText(
-                save.char_name_adapter.parse(
-                    save.char_name_adapter.build(
-                        lineEdit.text())))
+            text1 = lineEdit.text()
+            text2 = save.char_name_adapter.parse(save.char_name_adapter.build(text1))
+            position = lineEdit.cursorPosition() + len(text2) - len(text1)
+            lineEdit.setText(text2)
+            lineEdit.setCursorPosition(position)
 
     def initSaveEntryComboBox(self):
         self.ui.saveIndexComboBox.clear()
