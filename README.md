@@ -28,14 +28,13 @@ Only Python 3 is supported. View the available locations and their IDs by lookin
 
 # Running the GUI on Debian or Ubuntu
 
-First, install pyqt and git:
+First, make sure to have Python and poetry installed. After that, run:
 
 ```
-sudo apt install python3-pip python3-pyqt5 git
 git clone https://github.com/rrooij/sd3save_editor.git
 cd sd3save_editor
-pip3 install -r requirements.txt
-python3 -m sd3save_editor.gui
+poetry install
+poetry run python -m sd3save_editor.gui
 ```
 
 There is also an executable available on the [Releases](https://github.com/rrooij/sd3save_editor/releases) page.
