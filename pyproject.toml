@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "sd3save_editor"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8"
 construct = "2.10.56"
 scalpl = "0.4.0"
 PyQt5 = "=5.15.2"
