@@ -1,21 +1,27 @@
-[tool.poetry]
+[project]
 name = "sd3save-editor"
-version = "0.7.0"
+version = "0.7.1"
 description = "Save editor for Seiken Densetsu 3"
-authors = ["rrooij"]
-license = "GPLv3"
 readme = "README.md"
-packages = [{include = "sd3save_editor"}]
-
-[tool.poetry.dependencies]
-python = "^3.8"
-construct = "2.10.56"
-scalpl = "0.4.0"
-PyQt5 = "=5.15.2"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^8.0.0"
+license = { text = "GPLv3" }
+authors = [
+    { name = "rrooij" }
+]
+requires-python = ">=3.8"
+dependencies = [
+    "construct==2.10.70",
+    "scalpl==0.4.0",
+    "PyQt5==5.15.2",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
+
+[tool.uv]
+required-version = ">=0.5.0"

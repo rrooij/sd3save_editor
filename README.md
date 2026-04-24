@@ -28,13 +28,12 @@ Only Python 3 is supported. View the available locations and their IDs by lookin
 
 # Running the GUI on Debian or Ubuntu
 
-First, make sure to have Python and poetry installed. After that, run:
+First, make sure to have Python and uv installed. After that, run:
 
 ```
 git clone https://github.com/rrooij/sd3save_editor.git
 cd sd3save_editor
-poetry install
-poetry run python -m sd3save_editor.gui
+uv run python3 -m sd3save_editor.gui
 ```
 
 There is also an executable available on the [Releases](https://github.com/rrooij/sd3save_editor/releases) page.
