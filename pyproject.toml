@@ -22,3 +22,6 @@ build-backend = "hatchling.build"
 dev = [
     "pytest>=8.3.5",
 ]
+
+[tool.uv]
+required-version = ">=0.5.0"
