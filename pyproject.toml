@@ -7,11 +7,11 @@ license = { text = "GPLv3" }
 authors = [
     { name = "rrooij" }
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.13"
 dependencies = [
     "construct==2.10.70",
     "scalpl==0.4.0",
-    "PyQt5==5.15.2",
+    "PyQt5==5.15.11",
 ]
 
 [build-system]
@@ -20,7 +20,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
-    "pytest>=8.3.5",
+    "pytest>=9.0.3",
 ]
 
 [tool.uv]
